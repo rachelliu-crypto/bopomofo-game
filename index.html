@@ -306,12 +306,12 @@
                             </div>
                         </div>
 
-                        <!-- 🎒 輪播卡片 2：三堂精選單課區 (💡 已重構為由上往下、垂直清單置中，且每一格均為完整獨立 A 標籤橫列鏈接) -->
+                        <!-- 🎒 輪播卡片 2：三堂精選單課區 (💡 手機版已用 hidden sm:block 將前言徹底隱藏，防堵裁切並放大格子，整格點擊有效) -->
                         <div id="carousel-item-2" onclick="handleCarouselCardClick(event, 2)" class="carousel-item inactive absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-4 sm:p-5 pt-10 text-gray-900 shadow-xl overflow-hidden flex flex-col justify-center items-center cursor-pointer">
                             <!-- 單課專屬 Tag 置左 -->
                             <span class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow tracking-wider z-10">精選單課</span>
                             
-                            <!-- 💡 內部三列卡片：全面改為「由上往下」垂直排列，各別格內間距與物件放大，且將 nesting a 標籤移除改為單一 A 標籤整列覆蓋 -->
+                            <!-- 💡 內部三列卡片：全面改為「由上往下」垂直排列，各別格內間距與物件放大，且前言文字加上 hidden sm:block 防溢出 -->
                             <div class="flex flex-col gap-2 sm:gap-2.5 w-full flex-grow items-center justify-center mt-3">
                                 
                                 <!-- 單課 1：兒童識字趴 -->
@@ -323,7 +323,8 @@
                                     <!-- 中間文字說明 -->
                                     <div class="flex-grow text-left pr-2">
                                         <h4 class="text-sm md:text-base font-black text-purple-950 leading-tight">兒童識字趴</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
+                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) -->
+                                        <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
                                             和樂樂一起學好部件部首，跟錯字說 byebye！
                                         </p>
                                     </div>
@@ -344,7 +345,8 @@
                                     <!-- 中間文字說明 -->
                                     <div class="flex-grow text-left pr-2">
                                         <h4 class="text-sm md:text-base font-black text-purple-950 leading-tight">兒童注音讀寫趴</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
+                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) -->
+                                        <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
                                             一天一符號，每日 5 分鐘，兩個月輕鬆唱跳讀寫 37 個故事，快速銜接小學語言學程
                                         </p>
                                     </div>
@@ -365,7 +367,8 @@
                                     <!-- 中間文字說明 -->
                                     <div class="flex-grow text-left pr-2">
                                         <h4 class="text-sm md:text-base font-black text-purple-950 leading-tight">兒童造句趴</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
+                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) -->
+                                        <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
                                             10 集給孩子自己看的造句動畫課！練習 10 大常用句型！生活知識、情緒學習也一網打盡！
                                         </p>
                                     </div>
@@ -384,7 +387,7 @@
                         <button onclick="prevCarouselSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-90 shadow-md cursor-pointer pointer-events-auto" title="上一頁">
                             <i class="fa-solid fa-chevron-left text-sm font-black"></i>
                         </button>
-                        <button onclick="nextCarouselSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-90 shadow-md cursor-pointer pointer-events-auto" title="下一頁">
+                        <button onclick="nextCarouselSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-95 shadow-md cursor-pointer pointer-events-auto" title="下一頁">
                             <i class="fa-solid fa-chevron-right text-sm font-black"></i>
                         </button>
 
@@ -673,7 +676,7 @@
 
                 // 標準台灣排版規則定位 (改為 rounded-2xl 設計圓角)：
                 if (toneSymbol === '˙') {
-                    // 輕聲 (˙)：置於注音符號直列的「正上方」，不影響左右居中，底色改為純白不透明
+                    // 輕聲 (˙)：置於注音符號直列的「正上方”，不影響左右居中，底色改為純白不透明
                     slot.className = 'bopo-slot w-8 h-8 border-2 border-dashed border-purple-300 rounded-2xl bg-white flex items-center justify-center font-black text-lg text-purple-950 absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 shadow-sm z-10';
                     pronunciationWrapper.appendChild(slot); // 💡 掛在直行上，能保持優雅居中置頂
                 } else {
