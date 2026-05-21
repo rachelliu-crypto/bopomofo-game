@@ -221,8 +221,8 @@
 
                 </div>
 
-                <!-- 3. 候選注音泡泡池 (不換行且支援左右滑動，總選項擴充至 8 個) -->
-                <div id="bubblePool" class="flex flex-nowrap overflow-x-auto gap-3 justify-start sm:justify-center bg-white border-2 border-purple-100 p-4 rounded-3xl min-h-[96px] shadow-sm no-scrollbar">
+                <!-- 3. 候選注音泡泡池 (已由橫向滑動優化為自動換行 flex-wrap) -->
+                <div id="bubblePool" class="flex flex-wrap gap-3 justify-center bg-white border-2 border-purple-100 p-4 rounded-3xl min-h-[96px] shadow-sm">
                     <!-- JS 動態生成 -->
                 </div>
 
@@ -428,7 +428,6 @@
     let spellingSequence = [];
     let currentSequenceIndex = 0;
     let voiceEnabled = true;
-    let synth = window.speechSynthesis;
 
     // Web Audio API 音效生成
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -466,15 +465,54 @@
         }
     }
 
-    // 朗讀字詞
+    // 朗讀字詞 (修復電腦版 TTS 沒聲音、發音佇列卡死問題)
     function speak(text) {
-        if (!voiceEnabled || !synth) return;
+        if (!voiceEnabled) return;
+        const synth = window.speechSynthesis;
+        if (!synth) return;
+        
+        // 先強制中斷可能卡死在前一個狀態的語音佇列
         synth.cancel();
-        let utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'zh-TW';
-        utterance.rate = 0.8; // 小朋友友善語速
-        synth.speak(utterance);
+        
+        // 延遲 50ms 確保系統完全釋放之前的發音線程再播放，這能大幅解決電腦版無聲的問題
+        setTimeout(() => {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-TW';
+            utterance.rate = 0.85; // 小朋友友善語速
+            
+            // 尋找台灣在地的中文女聲（如果有的話，讓發音更甜美）
+            const voices = synth.getVoices();
+            const localVoice = voices.find(v => v.lang.includes('ZH-TW') || v.lang.includes('zh-TW') || v.lang.includes('zh_TW'));
+            if (localVoice) {
+                utterance.voice = localVoice;
+            }
+
+            // 錯誤處理與重啟機制
+            utterance.onerror = (event) => {
+                console.error("語音播放錯誤：", event.error);
+                if (event.error === 'interrupted') return;
+                // 如果被瀏覽器暫停了，嘗試強制喚醒
+                synth.resume();
+            };
+
+            try {
+                synth.speak(utterance);
+            } catch (e) {
+                console.error("TTS 發音失敗:", e);
+            }
+        }, 50);
     }
+
+    // 💡 第一次點擊網頁任何地方時，初始化並解鎖語音引擎（針對電腦版瀏覽器的安全阻擋）
+    window.addEventListener('click', () => {
+        const synth = window.speechSynthesis;
+        if (synth && synth.speaking === false) {
+            // 播放一個極短的空白發音來解鎖音訊通道
+            const u = new SpeechSynthesisUtterance('');
+            u.volume = 0;
+            synth.speak(u);
+        }
+    }, { once: true });
 
     // 3. 啟動遊戲
     function startNewGame() {
@@ -500,7 +538,9 @@
 
         // 修改後的動態提示語：[單字]要怎麼拼呢？
         document.getElementById('speechBubble').innerText = `「${q.word}」要怎麼拼呢？`;
-        speak(q.word);
+        
+        // 💡 修正電腦版沒聲音：將此處的自動引導 speak 移除 (autoplay政策會封鎖它進而導致後續全部沒聲音)
+        // speak(q.word); 
 
         spellingSequence = [];
         let absoluteSlotId = 0;
@@ -708,13 +748,13 @@
         ];
         document.getElementById('speechBubble').innerText = praises[Math.floor(Math.random() * praises.length)];
 
-        // 標準導讀
-        const q = selectedQuestions[currentQuestionIndex];
-        let spellText = "";
-        q.parts.forEach(p => {
-            spellText += `${p.char}，${p.spell.join('、')}，`;
-        });
-        speak(`${spellText} ${q.word}！`);
+        // 💡 修正要求 2：移除答對後的自動連讀發音，保留安靜與專注
+        // const q = selectedQuestions[currentQuestionIndex];
+        // let spellText = "";
+        // q.parts.forEach(p => {
+        //     spellText += `${p.char}，${p.spell.join('、')}，`;
+        // });
+        // speak(`${spellText} ${q.word}！`);
 
         document.getElementById('footerAction').classList.remove('hidden');
     }
