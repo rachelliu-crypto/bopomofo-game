@@ -156,7 +156,8 @@
 </head>
 <body class="bg-transparent py-4 md:py-8 px-4 flex flex-col justify-center items-center min-h-screen relative">
 
-<div class="max-w-3xl w-full mx-auto">
+<!-- 💡 電腦版寬度優化：由原本的 max-w-3xl 大幅拓寬升級為 max-w-5xl，讓大螢幕版面張力十足、更加舒展大器！ -->
+<div class="max-w-5xl w-full mx-auto">
     
     <!-- 遊戲機本體 (暖黃色策展頁色系) - 寬版與手機版間距優化 -->
     <div class="course-gradient-game p-4 sm:p-6 md:p-8 text-center flex flex-col justify-between">
@@ -184,44 +185,53 @@
         <div id="gameScreen" class="min-h-[450px] flex flex-col justify-between relative z-10 transition-all duration-300">
             
             <!-- 答題進行中的面板 -->
-            <div id="playPanel" class="flex flex-col flex-grow justify-between gap-5">
+            <div id="playPanel" class="flex flex-col flex-grow justify-between">
                 
-                <!-- 1. 吉祥物導引對話框 (已置入「聽聽看發音」按鈕與手機版標註) -->
-                <div class="w-full flex items-center gap-4 bg-white/95 border border-amber-200 p-3.5 rounded-2xl text-left relative shadow-sm">
-                    <div id="mascotAvatar" class="text-4xl shrink-0 select-none">🐣</div>
-                    <!-- 💡 已將此處容器調整為 items-start 靠左，並將按鈕與提示文案並排排列 -->
-                    <div class="flex-grow flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        <p id="speechBubble" class="text-base font-black text-gray-800 tracking-tight leading-relaxed">請依照順序拼出正確的注音唷！</p>
-                        <!-- 聽聽看發音按鈕與提示文字（精準置左且橫向並排） -->
-                        <div class="flex items-center gap-2 flex-wrap shrink-0">
-                            <button id="listenBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 text-xs font-black shadow-sm border border-purple-200">
-                                <i class="fa-solid fa-volume-high"></i>
-                                <span>聽聽看發音</span>
-                            </button>
-                            <span class="text-[10px] text-purple-600/70 font-bold whitespace-nowrap">（語音功能僅支援行動裝置）</span>
+                <!-- 💡 核心優化：電腦版下改採「左圖右拼」雙欄佈局（ col-span-5 vs col-span-7 ），手機平板自適應垂直排列，版面利用率最大化 -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch w-full flex-grow mb-4">
+                    
+                    <!-- 左半部（col-span-5）：放置引導語對話框 與 大張題目圖卡 -->
+                    <div class="lg:col-span-5 flex flex-col gap-4 justify-between">
+                        
+                        <!-- 吉祥物導引對話框 (內置置左聽聽看發音按鈕與提示文案) -->
+                        <div class="w-full flex items-center gap-4 bg-white/95 border border-amber-200 p-3.5 rounded-2xl text-left shadow-sm flex-grow lg:flex-grow-0">
+                            <div id="mascotAvatar" class="text-4xl shrink-0 select-none">🐣</div>
+                            <div class="flex-grow flex flex-col gap-2">
+                                <p id="speechBubble" class="text-sm sm:text-base font-black text-gray-800 tracking-tight leading-relaxed">請依照順序拼出正確的注音唷！</p>
+                                <!-- 聽聽看發音按鈕與提示文字 -->
+                                <div class="flex items-center gap-2 flex-wrap shrink-0">
+                                    <button id="listenBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 text-xs font-black shadow-sm border border-purple-200">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                        <span>聽聽看發音</span>
+                                    </button>
+                                    <span class="text-[10px] text-purple-600/70 font-bold whitespace-nowrap">（語音功能僅支援行動裝置）</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- 2. 核心大對齊：圖卡在左，拼音格子在右（高度、寬度完全填滿拉伸） -->
-                <div class="flex flex-col sm:flex-row items-stretch justify-center gap-6 my-1 w-full flex-grow">
-                    
-                    <!-- 左側：題目圖卡（純白、不透明底色，搭配精美淡紫框與大圓角） -->
-                    <div class="flex flex-row sm:flex-col items-center justify-center gap-4 bg-white border-2 border-purple-200 p-4 rounded-3xl shrink-0 sm:w-48 h-24 sm:h-auto shadow-md flex-grow sm:flex-grow-0">
-                        <div id="targetEmoji" class="text-5xl sm:text-7xl drop-shadow-sm select-none transition-transform duration-300 hover:scale-110">🐱</div>
-                        <h2 id="targetWordText" class="text-xl sm:text-3xl font-black text-slate-900 tracking-widest">貓咪</h2>
+                        <!-- 題目大圖卡（在電腦版中放大拉高，大氣吸睛） -->
+                        <div class="flex flex-row lg:flex-col items-center justify-center gap-4 bg-white border-2 border-purple-200 p-6 rounded-3xl shrink-0 h-24 lg:h-auto lg:flex-grow shadow-md">
+                            <div id="targetEmoji" class="text-5xl lg:text-8xl drop-shadow-sm select-none transition-transform duration-300 hover:scale-110">🐱</div>
+                            <h2 id="targetWordText" class="text-xl lg:text-4xl font-black text-slate-900 tracking-widest lg:mt-2">貓咪</h2>
+                        </div>
+                        
                     </div>
                     
-                    <!-- 右側：拼音格子區 -->
-                    <div id="spellingSlotsContainer" class="flex gap-4 sm:gap-6 justify-center items-stretch flex-wrap sm:flex-nowrap flex-grow">
-                        <!-- JS 動態生成 -->
+                    <!-- 右半部（col-span-7）：放置生字拼音格子與候選泡泡池 -->
+                    <div class="lg:col-span-7 flex flex-col gap-4 lg:gap-5 justify-between">
+                        
+                        <!-- 拼音格子區 -->
+                        <div id="spellingSlotsContainer" class="flex gap-3 sm:gap-4 lg:gap-5 justify-center items-stretch flex-wrap sm:flex-nowrap flex-grow min-h-[140px] lg:min-h-[220px]">
+                            <!-- JS 動態生成 -->
+                        </div>
+
+                        <!-- 候選注音泡泡池 -->
+                        <div id="bubblePool" class="flex flex-wrap gap-3 justify-center bg-white border-2 border-purple-100 p-4 rounded-3xl min-h-[96px] lg:min-h-[120px] shadow-sm w-full">
+                            <!-- JS 動態生成 -->
+                        </div>
+                        
                     </div>
-
-                </div>
-
-                <!-- 3. 候選注音泡泡池 (已由橫向滑動優化為自動換行 flex-wrap) -->
-                <div id="bubblePool" class="flex flex-wrap gap-3 justify-center bg-white border-2 border-purple-100 p-4 rounded-3xl min-h-[96px] shadow-sm">
-                    <!-- JS 動態生成 -->
+                    
                 </div>
 
             </div>
@@ -236,7 +246,7 @@
                 </p>
 
                 <!-- 雙課與單課超值優惠資訊板 (💡 調整卡片垂直間距 gap-4，使版面高度非常緊湊好收納) -->
-                <div class="my-3 w-full max-w-2xl text-left gap-4 flex flex-col">
+                <div class="my-3 w-full max-w-3xl text-left gap-4 flex flex-col">
                     
                     <!-- 🏆 置頂限定代碼區（改為乾淨實線邊框，優化手機版禮物 icon 尺寸與代碼防折行，新增 relative 定位以置入覆蓋式 Toast） -->
                     <div onclick="copyCouponCodeInsideGame()" class="bg-white border-2 border-purple-200 rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 shadow-lg cursor-pointer transition-all duration-200 active:scale-95 group relative overflow-hidden" title="點擊複製優惠代碼">
@@ -257,7 +267,7 @@
                             <span>點擊複製代碼</span>
                         </div>
 
-                        <!-- 💡 核心優化：複製成功覆蓋式 Toast -->
+                        <!-- 💡 核心優化：複製成功覆蓋式 Toast (已修改為高質感紫色 bg-purple-950/95 背景代替原本的綠色) -->
                         <div id="gameToast" class="absolute inset-0 z-20 bg-purple-950/95 backdrop-blur-sm text-white flex items-center justify-center gap-3 p-4 opacity-0 pointer-events-none scale-95 rounded-[1.6rem]">
                             <div class="bg-white text-purple-950 w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-md shrink-0">
                                 <i class="fa-solid fa-check"></i>
@@ -274,18 +284,18 @@
                     <!-- 💡 核心優化：雙課方案與精選單課之兩張卡片自動輪播（每一屏僅顯示一張，更專注美觀；已大幅縮減手機版最小高度至 min-h-[230px]，精準防溢出） -->
                     <div class="relative w-full overflow-hidden min-h-[230px] sm:min-h-[460px] md:min-h-[380px] flex items-center justify-center">
                         
-                        <!-- 🎒 輪播卡片 1：雙課合購卡片 -->
+                        <!-- 🎒 輪播卡片 1：雙課合購卡片 (💡 手機版內縮間距且極致垂直置中對齊，文字資訊置左且大小放大優化) -->
                         <div id="carousel-item-1" onclick="handleCarouselCardClick(event, 1)" class="carousel-item active absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-4 sm:p-5 pt-8 sm:pt-12 text-gray-900 shadow-xl overflow-hidden flex flex-col justify-center items-center gap-2 sm:gap-3 cursor-pointer">
                             <!-- 雙課專屬 Tag -->
                             <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow tracking-wider z-10">雙課方案</span>
                             
-                            <!-- 雙課方案兩張圖片並排展示 -->
+                            <!-- 雙課方案兩張圖片並排展示 (💡 限制最大高度，保障一屏舒適度) -->
                             <div class="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-[480px]">
                                 <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2F7eba25c4ea4367eeda67dc7d.png" alt="[兒童注音趴]" class="w-full rounded-xl sm:rounded-2xl object-contain max-h-[70px] sm:max-h-[140px] shadow-sm transition-all duration-300 hover:scale-[1.01]">
                                 <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ffdd0f155b4fd6ff680cb9606.png" alt="[兒童拼音趴]" class="w-full rounded-xl sm:rounded-2xl object-contain max-h-[70px] sm:max-h-[140px] shadow-sm transition-all duration-300 hover:scale-[1.01]">
                             </div>
                             
-                            <!-- 雙課方案文案與按鈕區 -->
+                            <!-- 雙課方案文案與按鈕區 (💡 文字大小已調大，按鈕文字更新為搶先領取優惠) -->
                             <div class="text-left flex flex-row items-center justify-between gap-3 sm:gap-6 w-full max-w-[480px] mt-1 sm:mt-2">
                                 <div class="flex-grow md:max-w-[65%] flex flex-col items-start text-left">
                                     <span class="text-[9px] sm:text-[13px] text-purple-700 font-extrabold block mb-0.5 leading-tight">
@@ -306,21 +316,21 @@
                             </div>
                         </div>
 
-                        <!-- 🎒 輪播卡片 2：三堂精選單課區 -->
-                        <div id="carousel-item-2" onclick="handleCarouselCardClick(event, 2)" class="carousel-item inactive absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-3 sm:p-5 pt-10 text-gray-900 shadow-xl overflow-hidden flex flex-col justify-center items-center cursor-pointer">
-                            <!-- 開選單課專屬 Tag 置左 -->
+                        <!-- 🎒 輪播卡片 2：三堂精選單課區 (💡 手機版完全隱藏前言、大膽縮減格子內距，格子本身高度與內容居中對稱，防標題折行) -->
+                        <div id="carousel-item-2" onclick="handleCarouselCardClick(event, 2)" class="carousel-item inactive absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-4 sm:p-5 pt-10 text-gray-900 shadow-xl overflow-hidden flex flex-col justify-center items-center cursor-pointer">
+                            <!-- 單課專屬 Tag 置左 -->
                             <span class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow tracking-wider z-10">精選單課</span>
                             
                             <!-- 💡 內部三列卡片：垂直排列，高度與間距全面壓縮至最極致 (p-1.5 sm:p-3)，保證絕對能完美收納於 230px 卡片中且置中 -->
-                            <div class="flex flex-col gap-1.5 sm:gap-2.5 w-full flex-grow items-center justify-center mt-2.5 max-w-[480px]">
+                            <div class="flex flex-col gap-1.5 sm:gap-2.5 w-full flex-grow items-center justify-center mt-2.5 max-w-[480px] lg:max-w-[560px]">
                                 
                                 <!-- 單課 1：兒童識字趴 -->
                                 <a href="https://learning.parenting.com.tw/plans/81938" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-purple-50/40 hover:bg-purple-50/70 p-1.5 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full border border-purple-100/50 block group cursor-pointer">
-                                    <!-- 左側小圖片 (高度縮小為 h-9 以大幅節省空間) -->
+                                    <!-- 左側小圖片 -->
                                     <div class="shrink-0 w-12 h-9 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
                                         <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ff3a7b03acb762aab437e871c.png" alt="[兒童識字趴]" class="w-full h-full object-cover">
                                     </div>
-                                    <!-- 中間文字說明 (防折行) -->
+                                    <!-- 中間文字說明 -->
                                     <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
                                         <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童識字趴</h4>
                                         <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
@@ -337,11 +347,11 @@
 
                                 <!-- 單課 2：兒童注音讀寫趴 -->
                                 <a href="https://learning.parenting.com.tw/plans/81939" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-purple-50/40 hover:bg-purple-50/70 p-1.5 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full border border-purple-100/50 block group cursor-pointer">
-                                    <!-- 左側小圖片 (高度縮小為 h-9) -->
+                                    <!-- 左側小圖片 -->
                                     <div class="shrink-0 w-12 h-9 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
                                         <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fa95a40ec737b720fb6a4002c.png" alt="[兒童注音讀寫趴]" class="w-full h-full object-cover">
                                     </div>
-                                    <!-- 中間文字說明 (防折行) -->
+                                    <!-- 中間文字說明 -->
                                     <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
                                         <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童注音讀寫趴</h4>
                                         <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
@@ -358,11 +368,11 @@
 
                                 <!-- 單課 3：兒童造句趴 -->
                                 <a href="https://learning.parenting.com.tw/plans/81940" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-purple-50/40 hover:bg-purple-50/70 p-1.5 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full border border-purple-100/50 block group cursor-pointer">
-                                    <!-- 左側小圖片 (高度縮小為 h-9) -->
+                                    <!-- 左側小圖片 -->
                                     <div class="shrink-0 w-12 h-9 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
                                         <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fd1c6b7dce7ac6f503b13e6e4.png" alt="[兒童造句趴]" class="w-full h-full object-cover">
                                     </div>
-                                    <!-- 中間文字說明 (防折行) -->
+                                    <!-- 中間文字說明 -->
                                     <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
                                         <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童造句趴</h4>
                                         <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
@@ -380,11 +390,11 @@
                             </div>
                         </div>
 
-                        <!-- 💡 核心優化：手動上一頁與下一頁按鈕 (z-40 懸浮於卡片左右兩側，針對縮短高度卡片微調定位) -->
-                        <button onclick="prevCarouselSlide()" class="absolute left-1.5 top-1/2 -translate-y-1/2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-90 shadow-md cursor-pointer pointer-events-auto" title="上一頁">
+                        <!-- 💡 核心優化：手動上一頁與下一頁按鈕 (z-40 懸浮於卡片左右兩側，針對縮短高度卡片與 5xl 容器做精確位置重定位) -->
+                        <button onclick="prevCarouselSlide()" class="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-90 shadow-md cursor-pointer pointer-events-auto" title="上一頁">
                             <i class="fa-solid fa-chevron-left text-xs sm:text-sm font-black"></i>
                         </button>
-                        <button onclick="nextCarouselSlide()" class="absolute right-1.5 top-1/2 -translate-y-1/2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-95 shadow-md cursor-pointer pointer-events-auto" title="下一頁">
+                        <button onclick="nextCarouselSlide()" class="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-95 shadow-md cursor-pointer pointer-events-auto" title="下一頁">
                             <i class="fa-solid fa-chevron-right text-xs sm:text-sm font-black"></i>
                         </button>
 
@@ -449,7 +459,7 @@
         { word: '漢堡', emoji: '🍔', parts: [{ char: '漢', spell: ['ㄏ', 'ㄢ', 'ˋ'] }, { char: '堡', spell: ['ㄅ', 'ㄠ', 'ˇ'] }] },
         { word: '蛋糕', emoji: '🍰', parts: [{ char: '蛋', spell: ['ㄉ', 'ㄢ', 'ˋ'] }, { char: '糕', spell: ['ㄍ', 'ㄠ'] }] },
         { word: '書包', emoji: '🎒', parts: [{ char: '書', spell: ['ㄕ', 'ㄨ'] }, { char: '包', spell: ['ㄅ', 'ㄠ'] }] },
-        { word: '鉛筆', emoji: '✏️', parts: [{ char: '鉛', spell: ['ㄑ', 'ㄧ', 'ㄢ'] }, { char: '筆', spell: ['ㄅ', 'ㄧ', 'ˇ'] }] }, // ✅ 已徹底修正「鉛筆」拼音錯誤 (延 修正為 ㄢ)
+        { word: '鉛筆', emoji: '✏️', parts: [{ char: '鉛', spell: ['ㄑ', 'ㄧ', 'ㄢ'] }, { char: '筆', spell: ['ㄅ', 'ㄧ', 'ˇ'] }] }, // ✅ 已徹底修正「鉛筆」拼音錯誤
         { word: '火車', emoji: '🚂', parts: [{ char: '火', spell: ['ㄏ', 'ㄨ', 'ㄛ', 'ˇ'] }, { char: '車', spell: ['ㄔ', 'ㄜ'] }] }
     ];
 
@@ -496,7 +506,6 @@
             osc.start();
             osc.stop(audioCtx.currentTime + 0.4);
         } else if (type === 'wrong') {
-            // 💡 修正答錯音效：改為乾淨俐落、毫無沙啞或放屁聲的「雙音低沉警示音 (Dull Double-Beep)」
             osc.type = 'triangle'; // 使用柔和乾淨的三角波
             
             // 第一聲警示低音
