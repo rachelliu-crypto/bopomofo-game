@@ -47,23 +47,13 @@
             box-shadow: 0 2px 0px #2a1f50;
         }
 
-        /* 生字簿田字格 */
+        /* 生字簿方格 - 已移除虛線十字襯底 */
         .char-grid-box {
             background-color: #faf5ff; /* 淺紫底色 */
             border: 3px solid #d8b4fe; /* 紫色邊框 */
             box-shadow: 0 4px 0 #c084fc;
             position: relative;
         }
-
-        /* 繪製米字格虛線襯底 */
-        .char-grid-box::before, .char-grid-box::after {
-            content: '';
-            position: absolute;
-            border: 1px dashed rgba(192, 132, 252, 0.35);
-            pointer-events: none;
-        }
-        .char-grid-box::before { top: 0; bottom: 0; left: 50%; width: 0; }
-        .char-grid-box::after { left: 0; right: 0; top: 50%; height: 0; }
 
         /* 單個注音符號空格 */
         .bopo-slot {
@@ -186,22 +176,25 @@
             <span id="progressText" class="text-base font-black text-purple-950 shrink-0 select-none">1/5</span>
         </div>
 
-        <!-- 互動主畫面 -->
-        <div id="gameScreen" class="min-h-[380px] flex flex-col justify-between relative z-10">
+        <!-- 互動主畫面 (💡 已將最小高度調整回黃金比例 min-h-[450px]，在遊玩時精緻緊湊，過關後可自然向下伸展) -->
+        <div id="gameScreen" class="min-h-[450px] flex flex-col justify-between relative z-10 transition-all duration-300">
             
             <!-- 答題進行中的面板 -->
             <div id="playPanel" class="flex flex-col flex-grow justify-between gap-5">
                 
-                <!-- 1. 吉祥物導引對話框 (已置入「聽聽看發音」按鈕) -->
+                <!-- 1. 吉祥物導引對話框 (已置入「聽聽看發音」按鈕與手機版標註) -->
                 <div class="w-full flex items-center gap-4 bg-white/95 border border-amber-200 p-3.5 rounded-2xl text-left relative shadow-sm">
                     <div id="mascotAvatar" class="text-4xl shrink-0 select-none">🐣</div>
                     <div class="flex-grow flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <p id="speechBubble" class="text-base font-black text-gray-800 tracking-tight leading-relaxed">請依照順序拼出正確的注音唷！</p>
                         <!-- 聽聽看發音按鈕 -->
-                        <button id="listenBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 shrink-0 text-xs font-black shadow-sm border border-purple-200">
-                            <i class="fa-solid fa-volume-high"></i>
-                            <span>聽聽看發音</span>
-                        </button>
+                        <div class="flex flex-col items-end shrink-0">
+                            <button id="listenBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 text-xs font-black shadow-sm border border-purple-200">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>聽聽看發音</span>
+                            </button>
+                            <span class="text-[10px] text-purple-600/70 mt-1 font-bold">（語音功能僅支援行動裝置）</span>
+                        </div>
                     </div>
                 </div>
 
@@ -237,23 +230,24 @@
                     想更進一步提升孩子的聽辨與拼讀能力嗎？推薦注音系列課程
                 </p>
 
-                <!-- 雙課與單課超值優惠資訊板 -->
-                <div class="my-3 w-full max-w-2xl text-left gap-6 flex flex-col">
+                <!-- 雙課與單課超值優惠資訊板 (💡 調整卡片垂直間距 gap-4，使版面高度非常緊湊好收納) -->
+                <div class="my-3 w-full max-w-2xl text-left gap-4 flex flex-col">
                     
-                    <!-- 🏆 置頂限定代碼區（改為乾淨實線邊框） -->
-                    <div onclick="copyCouponCodeInsideGame()" class="bg-white border-2 border-purple-200 rounded-3xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg cursor-pointer transition-all duration-200 active:scale-95 group" title="點擊複製優惠代碼">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-yellow-400 w-11 h-11 rounded-2xl flex items-center justify-center shadow shadow-yellow-600 shrink-0">
-                                <i class="fa-solid fa-gift text-purple-900 text-xl animate-pulse"></i>
+                    <!-- 🏆 置頂限定代碼區（改為乾淨實線邊框，優化手機版禮物 icon 尺寸與代碼防折行） -->
+                    <div onclick="copyCouponCodeInsideGame()" class="bg-white border-2 border-purple-200 rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 shadow-lg cursor-pointer transition-all duration-200 active:scale-95 group" title="點擊複製優惠代碼">
+                        <div class="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                            <!-- 禮物 icon 手機版縮小至 w-8 h-8 釋放寬度 -->
+                            <div class="bg-yellow-400 w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center shadow shadow-yellow-600 shrink-0">
+                                <i class="fa-solid fa-gift text-purple-900 text-sm sm:text-xl animate-pulse"></i>
                             </div>
-                            <div class="text-left">
-                                <span class="text-xs text-purple-700 font-black tracking-widest block mb-0.5">升小一限定優惠（雙課方案、單課皆適用）</span>
-                                <p class="text-sm md:text-base font-black text-gray-950 leading-tight">
-                                    結帳輸入代碼 <code class="bg-yellow-400 text-purple-950 px-2 py-0.5 rounded font-mono font-black text-sm group-hover:bg-yellow-300 transition-colors">GPM300</code> 現折 <span class="text-rose-600 font-black text-lg">300</span> 元！
+                            <div class="text-left flex-grow">
+                                <span class="text-[10px] sm:text-xs text-purple-700 font-black tracking-widest block mb-0.5">升小一限定優惠（以下方案皆適用）</span>
+                                <p class="text-xs sm:text-sm md:text-base font-black text-gray-950 leading-tight whitespace-nowrap">
+                                    結帳輸入代碼 <code class="bg-yellow-400 text-purple-950 px-1.5 py-0.5 rounded font-mono font-black text-xs sm:text-sm group-hover:bg-yellow-300 transition-colors">GPM300</code> 現折 <span class="text-rose-600 font-black text-sm sm:text-lg">300</span> 元！
                                 </p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-1.5 text-purple-700 font-black text-xs shrink-0 bg-purple-50 px-4 py-2 rounded-xl border border-purple-100 group-hover:bg-purple-100 transition-colors">
+                        <div class="flex items-center gap-1.5 text-purple-700 font-black text-xs shrink-0 bg-purple-50 px-4 py-2 rounded-xl border border-purple-100 group-hover:bg-purple-100 transition-colors w-full sm:w-auto justify-center sm:justify-start">
                             <i class="fa-solid fa-copy"></i>
                             <span>點擊複製代碼</span>
                         </div>
@@ -455,43 +449,70 @@
             osc.start();
             osc.stop(audioCtx.currentTime + 0.4);
         } else if (type === 'wrong') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(170, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(120, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            // 💡 修正答錯音效：改為乾淨俐落、毫無沙啞或放屁聲的「雙音低沉警示音 (Dull Double-Beep)」
+            osc.type = 'triangle'; // 使用柔和乾淨的三角波
+            
+            // 第一聲警示低音
+            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+            
+            // 短暫停頓後，第二聲更低沉的音效
+            setTimeout(() => {
+                const osc2 = audioCtx.createOscillator();
+                const gain2 = audioCtx.createGain();
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(240, audioCtx.currentTime);
+                osc2.connect(gain2);
+                gain2.connect(audioCtx.destination);
+                
+                gain2.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                
+                osc2.start();
+                osc2.stop(audioCtx.currentTime + 0.15);
+            }, 100);
+
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
+            osc.stop(audioCtx.currentTime + 0.12);
         }
     }
 
-    // 朗讀字詞 (修復電腦版 TTS 沒聲音、發音佇列卡死問題)
+    // 💡 判斷是否為手機/行動裝置
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    // 朗讀字詞 (僅在手機/平板版生效，防堵電腦版安全政策限制)
     function speak(text) {
         if (!voiceEnabled) return;
+        // 💡 限制電腦版發音，僅限手機行動裝置使用
+        if (!isMobileDevice()) {
+            console.log("電腦版已停用語音功能");
+            return;
+        }
+
         const synth = window.speechSynthesis;
         if (!synth) return;
         
         // 先強制中斷可能卡死在前一個狀態的語音佇列
         synth.cancel();
         
-        // 延遲 50ms 確保系統完全釋放之前的發音線程再播放，這能大幅解決電腦版無聲的問題
+        // 延遲 50ms 確保系統完全釋放之前的發音線程再播放
         setTimeout(() => {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-TW';
             utterance.rate = 0.85; // 小朋友友善語速
             
-            // 尋找台灣在地的中文女聲（如果有的話，讓發音更甜美）
             const voices = synth.getVoices();
             const localVoice = voices.find(v => v.lang.includes('ZH-TW') || v.lang.includes('zh-TW') || v.lang.includes('zh_TW'));
             if (localVoice) {
                 utterance.voice = localVoice;
             }
 
-            // 錯誤處理與重啟機制
             utterance.onerror = (event) => {
                 console.error("語音播放錯誤：", event.error);
                 if (event.error === 'interrupted') return;
-                // 如果被瀏覽器暫停了，嘗試強制喚醒
                 synth.resume();
             };
 
@@ -503,11 +524,11 @@
         }, 50);
     }
 
-    // 💡 第一次點擊網頁任何地方時，初始化並解鎖語音引擎（針對電腦版瀏覽器的安全阻擋）
+    // 第一次點擊網頁任何地方時，初始化解鎖行動裝置語音引擎
     window.addEventListener('click', () => {
+        if (!isMobileDevice()) return;
         const synth = window.speechSynthesis;
         if (synth && synth.speaking === false) {
-            // 播放一個極短的空白發音來解鎖音訊通道
             const u = new SpeechSynthesisUtterance('');
             u.volume = 0;
             synth.speak(u);
@@ -524,6 +545,9 @@
         document.getElementById('victoryPanel').classList.add('hidden');
         document.getElementById('footerAction').classList.add('hidden');
 
+        // 💡 確保重開新局時「換一題」按鈕顯現
+        document.getElementById('resetBtn').classList.remove('hidden');
+
         loadQuestion();
         updateProgressBar();
     }
@@ -538,9 +562,6 @@
 
         // 修改後的動態提示語：[單字]要怎麼拼呢？
         document.getElementById('speechBubble').innerText = `「${q.word}」要怎麼拼呢？`;
-        
-        // 💡 修正電腦版沒聲音：將此處的自動引導 speak 移除 (autoplay政策會封鎖它進而導致後續全部沒聲音)
-        // speak(q.word); 
 
         spellingSequence = [];
         let absoluteSlotId = 0;
@@ -549,9 +570,9 @@
         slotsContainer.innerHTML = '';
 
         q.parts.forEach((part, charIndex) => {
-            // 建立生字格大外框 (改為 justify-center 讓拔除國字後的注音格能完全垂直置中)
+            // 建立生字格大外框 (💡 調整手機版內邊距 px-2 留出兩側空間，防止溢出)
             const charBox = document.createElement('div');
-            charBox.className = 'char-grid-box flex-1 min-w-[125px] sm:min-w-[140px] rounded-3xl flex flex-col items-center justify-center p-4 shadow-sm h-full';
+            charBox.className = 'char-grid-box flex-1 min-w-[120px] sm:min-w-[140px] rounded-3xl flex flex-col items-center justify-center px-2 py-4 sm:p-4 shadow-sm h-full overflow-visible';
 
             // 分離「主拼音字母」與「聲調符號」
             const spellCopy = [...part.spell];
@@ -560,9 +581,9 @@
                 toneSymbol = spellCopy.pop(); // 把聲調抽出來
             }
 
-            // 建立注音符號直排的容器 (垂直間隔拉大為 gap-4，留出優雅舒適的空白)
+            // 建立注音符號直排的容器 (垂直間隔拉大為 gap-4)
             const pronunciationWrapper = document.createElement('div');
-            pronunciationWrapper.className = 'flex flex-col gap-4 items-center justify-center';
+            pronunciationWrapper.className = 'relative flex flex-col gap-4 items-center justify-center'; // 💡 新增 relative 用以定位輕聲
 
             // 1. 產生主注音符號空格 (改為純白色 bg-white 不透明底色，改為 rounded-2xl 設計圓角)
             spellCopy.forEach((symbol) => {
@@ -583,10 +604,10 @@
                 absoluteSlotId++;
             });
 
-            // 2. 建立定位聲調與拼音格的中央相對定位容器
+            // 2. 建立定位聲調與拼音格的中央相對定位容器 (💡 改為 flex-row，使聲調與拼音一體化置中，不使用 negative translation 也能保障邊距)
             const zhuyinContainer = document.createElement('div');
-            zhuyinContainer.className = 'relative flex items-center justify-center';
-            zhuyinContainer.appendChild(pronunciationWrapper); // 拼音直排永遠為寬度基準，端正居中
+            zhuyinContainer.className = 'relative flex flex-row items-center justify-center gap-2 sm:gap-3 overflow-visible';
+            zhuyinContainer.appendChild(pronunciationWrapper); // 拼音直列永遠為寬度基準，端正居中
 
             // 3. 如果有聲調，使用絕對定位（Absolute Positioning）附屬定位
             if (toneSymbol) {
@@ -597,13 +618,14 @@
                 // 標準台灣排版規則定位 (改為 rounded-2xl 設計圓角)：
                 if (toneSymbol === '˙') {
                     // 輕聲 (˙)：置於注音符號直列的「正上方」，不影響左右居中，底色改為純白不透明
-                    slot.className = 'bopo-slot w-8 h-8 border-2 border-dashed border-purple-300 rounded-2xl bg-white flex items-center justify-center font-black text-lg text-purple-950 absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 shadow-sm';
+                    slot.className = 'bopo-slot w-8 h-8 border-2 border-dashed border-purple-300 rounded-2xl bg-white flex items-center justify-center font-black text-lg text-purple-950 absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 shadow-sm z-10';
+                    pronunciationWrapper.appendChild(slot); // 💡 掛在直行上，能保持優雅居中置頂
                 } else {
-                    // 二、三、四聲：置於注音符號直列的「右側」，不影響左右居中，底色改為純白不透明
-                    slot.className = 'bopo-slot w-8 h-8 border-2 border-dashed border-purple-300 rounded-2xl bg-white flex items-center justify-center font-black text-lg text-purple-950 absolute left-[calc(100%+10px)] top-1/2 -translate-y-1/2 shadow-sm';
+                    // 二、三、四聲：置於注音符號直列的「右側」，底色改為純白不透明
+                    // 💡 改動：移成了 absolute，使其作為 flex 子元素自然排在右側，自動跟隨整體容器居中
+                    slot.className = 'bopo-slot w-8 h-8 border-2 border-dashed border-purple-300 rounded-2xl bg-white flex items-center justify-center font-black text-lg text-purple-950 shadow-sm shrink-0';
+                    zhuyinContainer.appendChild(slot);
                 }
-
-                zhuyinContainer.appendChild(slot);
 
                 spellingSequence.push({
                     symbol: toneSymbol,
@@ -741,20 +763,12 @@
         playBeep('success');
 
         const praises = [
-            "哇！你拼對了！太厲害了！",
+            "你拼對了！太厲害了！",
             "完全正確！拍拍手！",
             "你好棒！全部都找對了！",
-            "真厲害！進步超快唷！"
+            "答對了，你真厲害！"
         ];
         document.getElementById('speechBubble').innerText = praises[Math.floor(Math.random() * praises.length)];
-
-        // 💡 修正要求 2：移除答對後的自動連讀發音，保留安靜與專注
-        // const q = selectedQuestions[currentQuestionIndex];
-        // let spellText = "";
-        // q.parts.forEach(p => {
-        //     spellText += `${p.char}，${p.spell.join('、')}，`;
-        // });
-        // speak(`${spellText} ${q.word}！`);
 
         document.getElementById('footerAction').classList.remove('hidden');
     }
@@ -788,7 +802,8 @@
         document.getElementById('victoryPanel').classList.remove('hidden');
         document.getElementById('victoryPanel').classList.add('flex');
 
-        speak("恭喜完成拼音大考驗！");
+        // 💡 修正：最後結果頁把 換一題 移除
+        document.getElementById('resetBtn').classList.add('hidden');
 
         setTimeout(() => {
             playBeep('success');
@@ -808,11 +823,15 @@
             victoryPanel.classList.add('flex');
             document.getElementById('progressBar').style.width = '100%';
             document.getElementById('progressText').innerText = '5/5';
-            speak("測試進入結算畫面！");
+            
+            // 💡 測試面板切換也要比照辦理
+            document.getElementById('resetBtn').classList.add('hidden');
         } else {
             victoryPanel.classList.add('hidden');
             victoryPanel.classList.remove('flex');
             playPanel.style.display = 'flex';
+            
+            document.getElementById('resetBtn').classList.remove('hidden');
             updateProgressBar();
         }
     }
