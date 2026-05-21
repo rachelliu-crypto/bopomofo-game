@@ -158,8 +158,8 @@
 
 <div class="max-w-3xl w-full mx-auto">
     
-    <!-- 遊戲機本體 (暖黃色策展頁色系) - 寬版優化 -->
-    <div class="course-gradient-game p-6 md:p-8 text-center flex flex-col justify-between">
+    <!-- 遊戲機本體 (暖黃色策展頁色系) - 寬版與手機版間距優化 -->
+    <div class="course-gradient-game p-4 sm:p-6 md:p-8 text-center flex flex-col justify-between">
         
         <!-- 頂部進度條與換一題按鈕 -->
         <div class="flex items-center gap-4 mb-5 z-10 relative">
@@ -271,34 +271,34 @@
                         </div>
                     </div>
                     
-                    <!-- 💡 核心優化：雙課方案與精選單課之兩張卡片自動輪播（每一屏僅顯示一張，更專注美觀；新增 onclick 支援手動點擊卡片跳頁） -->
-                    <div class="relative w-full overflow-hidden min-h-[460px] md:min-h-[380px] flex items-center justify-center">
+                    <!-- 💡 核心優化：雙課方案與精選單課之兩張卡片自動輪播（每一屏僅顯示一張，更專注美觀；已縮減手機版最小高度 min-h-[310px]，防止切邊） -->
+                    <div class="relative w-full overflow-hidden min-h-[310px] sm:min-h-[460px] md:min-h-[380px] flex items-center justify-center">
                         
-                        <!-- 🎒 輪播卡片 1：雙課合購卡片 -->
-                        <div id="carousel-item-1" onclick="handleCarouselCardClick(event, 1)" class="carousel-item active absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-5 pt-12 text-gray-900 shadow-xl overflow-hidden flex flex-col gap-3 cursor-pointer">
+                        <!-- 🎒 輪播卡片 1：雙課合購卡片 (💡 手機版縮小內邊距 p-4 sm:p-5 pt-8 sm:pt-12，縮減與圖片的空白 gap-2 sm:gap-3) -->
+                        <div id="carousel-item-1" onclick="handleCarouselCardClick(event, 1)" class="carousel-item active absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-4 sm:p-5 pt-8 sm:pt-12 text-gray-900 shadow-xl overflow-hidden flex flex-col gap-2 sm:gap-3 cursor-pointer">
                             <!-- 雙課專屬 Tag -->
                             <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow tracking-wider z-10">雙課方案</span>
                             
                             <!-- 雙課方案兩張圖片並排展示 -->
-                            <div class="grid grid-cols-2 gap-4 w-full">
-                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2F7eba25c4ea4367eeda67dc7d.png" alt="[兒童注音趴]" class="w-full rounded-2xl object-contain shadow-sm transition-all duration-300 hover:scale-[1.01]">
-                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ffdd0f155b4fd6ff680cb9606.png" alt="[兒童拼音趴]" class="w-full rounded-2xl object-contain shadow-sm transition-all duration-300 hover:scale-[1.01]">
+                            <div class="grid grid-cols-2 gap-2 sm:gap-4 w-full">
+                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2F7eba25c4ea4367eeda67dc7d.png" alt="[兒童注音趴]" class="w-full rounded-xl sm:rounded-2xl object-contain shadow-sm transition-all duration-300 hover:scale-[1.01]">
+                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ffdd0f155b4fd6ff680cb9606.png" alt="[兒童拼音趴]" class="w-full rounded-xl sm:rounded-2xl object-contain shadow-sm transition-all duration-300 hover:scale-[1.01]">
                             </div>
                             
-                            <!-- 雙課方案文案與按鈕區 (💡 移除 mt-auto、調整 mt-2 使文字向上移動貼近圖片) -->
-                            <div class="text-left flex flex-col md:flex-row md:items-end justify-between gap-6 w-full mt-2">
+                            <!-- 雙課方案文案與按鈕區 (💡 mt-1 sm:mt-2 文字與按鈕精確向上提拉) -->
+                            <div class="text-left flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-6 w-full mt-1 sm:mt-2">
                                 <div class="flex-grow md:max-w-[65%]">
-                                    <span class="text-xs text-purple-700 font-black block mb-1">
+                                    <span class="text-[10px] sm:text-xs text-purple-700 font-black block mb-0.5">
                                         溫美玉ｘ魏瑛娟攜手設計注音線上課程
                                     </span>
-                                    <h3 class="text-lg md:text-xl font-black text-purple-950 leading-tight mb-2">兒童注音趴 ＋ 拼音趴</h3>
-                                    <p class="text-xs text-gray-600 leading-relaxed">
+                                    <h3 class="text-base sm:text-lg md:text-xl font-black text-purple-950 leading-tight mb-1">兒童注音趴 ＋ 拼音趴</h3>
+                                    <p class="text-[10px] sm:text-xs text-gray-600 leading-relaxed">
                                         從零基礎認字發音到結合韻、聲調練習，幫助孩子輕鬆應對小一開學的注音大關卡！
                                     </p>
                                 </div>
                                 
                                 <div class="shrink-0 flex justify-end w-full md:w-auto">
-                                    <a href="https://learning.parenting.com.tw/plans/467de1dc-cefd-4a7c-a852-ee32c81e91a2" target="_blank" rel="noopener noreferrer" class="py-3 px-6 bg-gradient-to-r from-amber-400 to-amber-500 text-purple-950 font-black text-sm rounded-xl shadow-md hover:from-amber-300 hover:to-amber-400 transition-all flex items-center justify-center gap-1.5 active:scale-95 whitespace-nowrap w-full md:w-auto">
+                                    <a href="https://learning.parenting.com.tw/plans/467de1dc-cefd-4a7c-a852-ee32c81e91a2" target="_blank" rel="noopener noreferrer" class="py-2.5 px-4 sm:py-3 sm:px-6 bg-gradient-to-r from-amber-400 to-amber-500 text-purple-950 font-black text-xs sm:text-sm rounded-xl shadow-md hover:from-amber-300 hover:to-amber-400 transition-all flex items-center justify-center gap-1.5 active:scale-95 whitespace-nowrap w-full md:w-auto">
                                         <span>搶先領取限時優惠</span>
                                         <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                                     </a>
@@ -306,75 +306,78 @@
                             </div>
                         </div>
 
-                        <!-- 🎒 輪播卡片 2：三堂精選單課區 (💡 手機版已用 hidden sm:block 將前言徹底隱藏，防堵裁切並放大格子，整格點擊有效) -->
-                        <div id="carousel-item-2" onclick="handleCarouselCardClick(event, 2)" class="carousel-item inactive absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-4 sm:p-5 pt-10 text-gray-900 shadow-xl overflow-hidden flex flex-col justify-center items-center cursor-pointer">
+                        <!-- 🎒 輪播卡片 2：三堂精選單課區 (💡 手機版已用 hidden sm:block 將前言徹底隱藏，防堵裁切並放大格子，整格點擊有效，防標題折行) -->
+                        <div id="carousel-item-2" onclick="handleCarouselCardClick(event, 2)" class="carousel-item inactive absolute inset-0 w-full h-full bg-white border-2 border-purple-200 rounded-3xl p-3 sm:p-5 pt-10 text-gray-900 shadow-xl overflow-hidden flex flex-col justify-center items-center cursor-pointer">
                             <!-- 單課專屬 Tag 置左 -->
                             <span class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow tracking-wider z-10">精選單課</span>
                             
                             <!-- 💡 內部三列卡片：全面改為「由上往下」垂直排列，各別格內間距與物件放大，且前言文字加上 hidden sm:block 防溢出 -->
-                            <div class="flex flex-col gap-2 sm:gap-2.5 w-full flex-grow items-center justify-center mt-3">
+                            <div class="flex flex-col gap-1.5 sm:gap-2.5 w-full flex-grow items-center justify-center mt-2">
                                 
                                 <!-- 單課 1：兒童識字趴 -->
-                                <a href="https://learning.parenting.com.tw/plans/81938" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 bg-purple-50/40 hover:bg-purple-50/70 p-3 md:p-3.5 rounded-2xl transition-all w-full max-w-xl border border-purple-100/50 group cursor-pointer">
+                                <a href="https://learning.parenting.com.tw/plans/81938" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 sm:gap-4 bg-purple-50/40 hover:bg-purple-50/70 p-2 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full max-w-xl border border-purple-100/50 block group cursor-pointer">
                                     <!-- 左側小圖片 -->
-                                    <div class="shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden shadow-sm">
+                                    <div class="shrink-0 w-16 h-11 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
                                         <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ff3a7b03acb762aab437e871c.png" alt="[兒童識字趴]" class="w-full h-full object-cover">
                                     </div>
                                     <!-- 中間文字說明 -->
-                                    <div class="flex-grow text-left pr-2">
-                                        <h4 class="text-sm md:text-base font-black text-purple-950 leading-tight">兒童識字趴</h4>
-                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) -->
+                                    <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
+                                        <!-- 💡 新增 whitespace-nowrap 與 truncate，強制手機標題完全不折行 -->
+                                        <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童識字趴</h4>
+                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) 防止高度溢出 -->
                                         <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
                                             和樂樂一起學好部件部首，跟錯字說 byebye！
                                         </p>
                                     </div>
                                     <!-- 右側按鈕 -->
                                     <div class="shrink-0">
-                                        <div class="py-2 px-4 bg-purple-100 group-hover:bg-purple-200 text-purple-900 text-center text-xs font-black rounded-xl transition-all whitespace-nowrap">
+                                        <div class="py-1.5 px-2.5 sm:py-2 sm:px-4 bg-purple-100 group-hover:bg-purple-200 text-purple-900 text-center text-[10px] sm:text-xs font-black rounded-lg sm:rounded-xl transition-all block whitespace-nowrap">
                                             <span>了解更多</span>
                                         </div>
                                     </div>
                                 </a>
 
                                 <!-- 單課 2：兒童注音讀寫趴 -->
-                                <a href="https://learning.parenting.com.tw/plans/81939" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 bg-purple-50/40 hover:bg-purple-50/70 p-3 md:p-3.5 rounded-2xl transition-all w-full max-w-xl border border-purple-100/50 group cursor-pointer">
+                                <a href="https://learning.parenting.com.tw/plans/81939" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 sm:gap-4 bg-purple-50/40 hover:bg-purple-50/70 p-2 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full max-w-xl border border-purple-100/50 block group cursor-pointer">
                                     <!-- 左側小圖片 -->
-                                    <div class="shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden shadow-sm">
+                                    <div class="shrink-0 w-16 h-11 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
                                         <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fa95a40ec737b720fb6a4002c.png" alt="[兒童注音讀寫趴]" class="w-full h-full object-cover">
                                     </div>
                                     <!-- 中間文字說明 -->
-                                    <div class="flex-grow text-left pr-2">
-                                        <h4 class="text-sm md:text-base font-black text-purple-950 leading-tight">兒童注音讀寫趴</h4>
-                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) -->
+                                    <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
+                                        <!-- 💡 新增 whitespace-nowrap 與 truncate，強制手機標題完全不折行 -->
+                                        <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童注音讀寫趴</h4>
+                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) 防止高度溢出 -->
                                         <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
                                             一天一符號，每日 5 分鐘，兩個月輕鬆唱跳讀寫 37 個故事，快速銜接小學語言學程
                                         </p>
                                     </div>
                                     <!-- 右側按鈕 -->
                                     <div class="shrink-0">
-                                        <div class="py-2 px-4 bg-purple-100 group-hover:bg-purple-200 text-purple-900 text-center text-xs font-black rounded-xl transition-all whitespace-nowrap">
+                                        <div class="py-1.5 px-2.5 sm:py-2 sm:px-4 bg-purple-100 group-hover:bg-purple-200 text-purple-900 text-center text-[10px] sm:text-xs font-black rounded-lg sm:rounded-xl transition-all block whitespace-nowrap">
                                             <span>了解更多</span>
                                         </div>
                                     </div>
                                 </a>
 
                                 <!-- 單課 3：兒童造句趴 -->
-                                <a href="https://learning.parenting.com.tw/plans/81940" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 bg-purple-50/40 hover:bg-purple-50/70 p-3 md:p-3.5 rounded-2xl transition-all w-full max-w-xl border border-purple-100/50 group cursor-pointer">
+                                <a href="https://learning.parenting.com.tw/plans/81940" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 sm:gap-4 bg-purple-50/40 hover:bg-purple-50/70 p-2 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full max-w-xl border border-purple-100/50 block group cursor-pointer">
                                     <!-- 左側小圖片 -->
-                                    <div class="shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden shadow-sm">
+                                    <div class="shrink-0 w-16 h-11 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
                                         <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fd1c6b7dce7ac6f503b13e6e4.png" alt="[兒童造句趴]" class="w-full h-full object-cover">
                                     </div>
                                     <!-- 中間文字說明 -->
-                                    <div class="flex-grow text-left pr-2">
-                                        <h4 class="text-sm md:text-base font-black text-purple-950 leading-tight">兒童造句趴</h4>
-                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) -->
+                                    <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
+                                        <!-- 💡 新增 whitespace-nowrap 與 truncate，強制手機標題完全不折行 -->
+                                        <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童造句趴</h4>
+                                        <!-- 💡 手機版隱藏前言 (hidden sm:block) 防止高度溢出 -->
                                         <p class="hidden sm:block text-[10px] md:text-xs text-gray-500 leading-tight mt-1">
                                             10 集給孩子自己看的造句動畫課！練習 10 大常用句型！生活知識、情緒學習也一網打盡！
                                         </p>
                                     </div>
                                     <!-- 右側按鈕 -->
                                     <div class="shrink-0">
-                                        <div class="py-2 px-4 bg-purple-100 group-hover:bg-purple-200 text-purple-900 text-center text-xs font-black rounded-xl transition-all whitespace-nowrap">
+                                        <div class="py-1.5 px-2.5 sm:py-2 sm:px-4 bg-purple-100 group-hover:bg-purple-200 text-purple-900 text-center text-[10px] sm:text-xs font-black rounded-lg sm:rounded-xl transition-all block whitespace-nowrap">
                                             <span>了解更多</span>
                                         </div>
                                     </div>
@@ -384,11 +387,11 @@
                         </div>
 
                         <!-- 💡 核心優化：手動上一頁與下一頁按鈕 (z-40 懸浮於卡片左右兩側，設計精美，加入 pointer-events-auto 防止被卡片點擊攔截) -->
-                        <button onclick="prevCarouselSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-90 shadow-md cursor-pointer pointer-events-auto" title="上一頁">
-                            <i class="fa-solid fa-chevron-left text-sm font-black"></i>
+                        <button onclick="prevCarouselSlide()" class="absolute left-1 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-90 shadow-md cursor-pointer pointer-events-auto" title="上一頁">
+                            <i class="fa-solid fa-chevron-left text-xs sm:text-sm font-black"></i>
                         </button>
-                        <button onclick="nextCarouselSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-95 shadow-md cursor-pointer pointer-events-auto" title="下一頁">
-                            <i class="fa-solid fa-chevron-right text-sm font-black"></i>
+                        <button onclick="nextCarouselSlide()" class="absolute right-1 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-purple-200 text-purple-800 hover:bg-purple-50 flex items-center justify-center transition-all active:scale-95 shadow-md cursor-pointer pointer-events-auto" title="下一頁">
+                            <i class="fa-solid fa-chevron-right text-xs sm:text-sm font-black"></i>
                         </button>
 
                     </div>
