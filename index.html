@@ -140,18 +140,23 @@
         }
     </style>
 </head>
-<body class="bg-transparent py-1 md:py-2 px-4 flex flex-col justify-center items-center min-h-screen relative">
+<!-- 💡 外部頂部空白縮減優化：由 py-1 md:py-2 px-4 與 min-h-screen justify-center 改為 justify-start pt-3 md:pt-6 向上提拉 -->
+<body class="bg-transparent py-2 md:py-4 px-4 flex flex-col justify-start items-center min-h-screen relative">
 
 <div class="max-w-5xl w-full mx-auto">
     
+    <!-- 遊戲機本體 (暖黃色策展頁色系) -->
     <div class="course-gradient-game p-2.5 sm:p-5 md:p-6 text-center flex flex-col justify-between">
         
-        <div class="flex items-center gap-4 mb-2 lg:mb-3 z-10 relative">
+        <!-- 頂部進度條與換一題按鈕 - 下邊距 mb-2 縮小消除不必要的空白 -->
+        <div class="flex items-center gap-4 mb-2 lg:mb-2.5 z-10 relative">
+            <!-- 換一題按鈕 -->
             <button id="resetBtn" class="bg-black/10 hover:bg-black/20 text-slate-800 px-4 py-2 rounded-xl flex items-center gap-2 transition-all active:scale-95 shrink-0 text-sm font-black shadow-sm" title="換一題">
                 <i class="fa-solid fa-rotate-right"></i>
                 <span>換一題</span>
             </button>
             
+            <!-- Duolingo 風格進度條 -->
             <div class="flex-grow h-4 bg-black/10 rounded-full overflow-hidden relative border border-black/5">
                 <div id="progressBar" class="h-full w-0 bg-purple-600 rounded-full transition-all duration-300 ease-out relative">
                     <div class="absolute top-[2px] left-[5px] right-[5px] h-1 bg-white/30 rounded-full"></div>
@@ -163,13 +168,17 @@
 
         <div id="gameScreen" class="min-h-[420px] lg:min-h-[450px] flex flex-col justify-between relative z-10 transition-all duration-300">
             
+            <!-- 答題進行中的面板 -->
             <div id="playPanel" class="flex flex-col flex-grow justify-between">
                 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch w-full flex-grow mb-2 lg:mb-3">
                     
-                    <div class="lg:col-span-5 flex flex-col gap-3 lg:gap-4 justify-between">
+                    <!-- 左半部（col-span-5）：放置引導語對話框 與 大張題目圖卡 -->
+                    <!-- 💡 內部空白縮減優化：由 justify-between 改為 justify-start 靠上，避免大螢幕下吉祥物與圖卡被拉開而產生大量空白 -->
+                    <div class="lg:col-span-5 flex flex-col gap-3 lg:gap-4 justify-start">
                         
-                        <div class="w-full flex items-center gap-4 bg-white/95 border border-amber-200 p-3 flex-grow lg:flex-grow-0 rounded-2xl text-left shadow-sm">
+                        <!-- 吉祥物導引對話框 -->
+                        <div class="w-full flex items-center gap-4 bg-white/95 border border-amber-200 p-3 rounded-2xl text-left shadow-sm">
                             <div id="mascotAvatar" class="text-4xl shrink-0 select-none">🐣</div>
                             <div class="flex-grow flex flex-col gap-2">
                                 <p id="speechBubble" class="text-sm sm:text-base font-black text-gray-800 tracking-tight leading-relaxed">請依照順序拼出正確的注音唷！</p>
@@ -183,6 +192,7 @@
                             </div>
                         </div>
 
+                        <!-- 題目大圖卡 -->
                         <div class="flex flex-row lg:flex-col items-center justify-center gap-4 bg-white border-2 border-purple-200 p-4 lg:p-6 rounded-3xl shrink-0 h-24 lg:h-auto lg:flex-grow shadow-md">
                             <div id="targetEmoji" class="text-5xl lg:text-8xl drop-shadow-sm select-none transition-transform duration-300 hover:scale-110">🐱</div>
                             <h2 id="targetWordText" class="text-xl lg:text-4xl font-black text-slate-900 tracking-widest lg:mt-2">貓咪</h2>
@@ -190,6 +200,7 @@
                         
                     </div>
                     
+                    <!-- 右半部（col-span-7）：放置生字拼音格子與候選泡泡池 -->
                     <div class="lg:col-span-7 flex flex-col gap-4 lg:gap-5 justify-between">
                         
                         <div id="spellingSlotsContainer" class="flex gap-3 sm:gap-4 lg:gap-5 justify-center items-stretch flex-wrap sm:flex-nowrap flex-grow min-h-[140px] lg:min-h-[220px]">
@@ -204,6 +215,7 @@
 
             </div>
 
+            <!-- 5題全部完成的勝利面板 -->
             <div id="victoryPanel" class="hidden flex-col items-center justify-center py-4 text-center animate-fade-in w-full">
                 <div class="text-6xl mb-2">🏆</div>
                 <h2 class="text-2xl md:text-3xl font-black text-purple-950 tracking-tight mb-2">恭喜完成拼音大考驗！</h2>
@@ -249,8 +261,8 @@
                             <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow tracking-wider z-10">雙課方案</span>
                             
                             <div class="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-[480px]">
-                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2F7eba25c4ea4367eeda67dc7d.png" alt="兒童注音趴" class="w-full rounded-xl sm:rounded-2xl object-contain max-h-[70px] sm:max-h-[140px] shadow-sm transition-all duration-300 hover:scale-[1.01]">
-                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ffdd0f155b4fd6ff680cb9606.png" alt="兒童拼音趴" class="w-full rounded-xl sm:rounded-2xl object-contain max-h-[70px] sm:max-h-[140px] shadow-sm transition-all duration-300 hover:scale-[1.01]">
+                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2F7eba25c4ea4367eeda67dc7d.png" alt="[兒童注音趴]" class="w-full rounded-xl sm:rounded-2xl object-contain max-h-[70px] sm:max-h-[140px] shadow-sm transition-all duration-300 hover:scale-[1.01]">
+                                <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ffdd0f155b4fd6ff680cb9606.png" alt="[兒童拼音趴]" class="w-full rounded-xl sm:rounded-2xl object-contain max-h-[70px] sm:max-h-[140px] shadow-sm transition-all duration-300 hover:scale-[1.01]">
                             </div>
                             
                             <div class="text-left flex flex-row items-center justify-between gap-3 sm:gap-6 w-full max-w-[480px] mt-1 sm:mt-2">
@@ -280,7 +292,7 @@
                                 
                                 <a href="https://learning.parenting.com.tw/plans/81938" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-purple-50/40 hover:bg-purple-50/70 p-1.5 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full border border-purple-100/50 block group cursor-pointer">
                                     <div class="shrink-0 w-12 h-9 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
-                                        <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ff3a7b03acb762aab437e871c.png" alt="兒童識字趴" class="w-full h-full object-cover">
+                                        <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Ff3a7b03acb762aab437e871c.png" alt="[兒童識字趴]" class="w-full h-full object-cover">
                                     </div>
                                     <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
                                         <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童識字趴</h4>
@@ -297,7 +309,7 @@
 
                                 <a href="https://learning.parenting.com.tw/plans/81939" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-purple-50/40 hover:bg-purple-50/70 p-1.5 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full border border-purple-100/50 block group cursor-pointer">
                                     <div class="shrink-0 w-12 h-9 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
-                                        <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fa95a40ec737b720fb6a4002c.png" alt="兒童注音讀寫趴" class="w-full h-full object-cover">
+                                        <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fa95a40ec737b720fb6a4002c.png" alt="[兒童注音讀寫趴]" class="w-full h-full object-cover">
                                     </div>
                                     <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
                                         <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童注音讀寫趴</h4>
@@ -314,7 +326,7 @@
 
                                 <a href="https://learning.parenting.com.tw/plans/81940" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-purple-50/40 hover:bg-purple-50/70 p-1.5 sm:p-3 md:p-3.5 rounded-2xl transition-all w-full border border-purple-100/50 block group cursor-pointer">
                                     <div class="shrink-0 w-12 h-9 sm:w-20 sm:h-14 md:w-24 md:h-16 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
-                                        <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fd1c6b7dce7ac6f503b13e6e4.png" alt="兒童造句趴" class="w-full h-full object-cover">
+                                        <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=parenting%2F5%2F2103%2Fd1c6b7dce7ac6f503b13e6e4.png" alt="[兒童造句趴]" class="w-full h-full object-cover">
                                     </div>
                                     <div class="flex-grow text-left pr-1 sm:pr-2 overflow-hidden">
                                         <h4 class="text-xs sm:text-sm md:text-base font-black text-purple-950 leading-tight whitespace-nowrap truncate">兒童造句趴</h4>
