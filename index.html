@@ -140,23 +140,19 @@
         }
     </style>
 </head>
-<!-- 💡 外部頂部空白縮減優化：由 py-1 md:py-2 px-4 與 min-h-screen justify-center 改為 justify-start pt-3 md:pt-6 向上提拉 -->
 <body class="bg-transparent py-2 md:py-4 px-4 flex flex-col justify-start items-center min-h-screen relative">
 
-<div class="max-w-5xl w-full mx-auto">
+<!-- 💡 電腦版寬度優化：改為精緻緊湊的 max-w-2xl -->
+<div class="max-w-2xl w-full mx-auto">
     
-    <!-- 遊戲機本體 (暖黃色策展頁色系) -->
     <div class="course-gradient-game p-2.5 sm:p-5 md:p-6 text-center flex flex-col justify-between">
         
-        <!-- 頂部進度條與換一題按鈕 - 下邊距 mb-2 縮小消除不必要的空白 -->
         <div class="flex items-center gap-4 mb-2 lg:mb-2.5 z-10 relative">
-            <!-- 換一題按鈕 -->
             <button id="resetBtn" class="bg-black/10 hover:bg-black/20 text-slate-800 px-4 py-2 rounded-xl flex items-center gap-2 transition-all active:scale-95 shrink-0 text-sm font-black shadow-sm" title="換一題">
                 <i class="fa-solid fa-rotate-right"></i>
                 <span>換一題</span>
             </button>
             
-            <!-- Duolingo 風格進度條 -->
             <div class="flex-grow h-4 bg-black/10 rounded-full overflow-hidden relative border border-black/5">
                 <div id="progressBar" class="h-full w-0 bg-purple-600 rounded-full transition-all duration-300 ease-out relative">
                     <div class="absolute top-[2px] left-[5px] right-[5px] h-1 bg-white/30 rounded-full"></div>
@@ -169,48 +165,35 @@
         <div id="gameScreen" class="min-h-[420px] lg:min-h-[450px] flex flex-col justify-between relative z-10 transition-all duration-300">
             
             <!-- 答題進行中的面板 -->
-            <div id="playPanel" class="flex flex-col flex-grow justify-between">
+            <div id="playPanel" class="flex flex-col flex-grow justify-between gap-3 sm:gap-4">
                 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch w-full flex-grow mb-2 lg:mb-3">
-                    
-                    <!-- 左半部（col-span-5）：放置引導語對話框 與 大張題目圖卡 -->
-                    <!-- 💡 內部空白縮減優化：由 justify-between 改為 justify-start 靠上，避免大螢幕下吉祥物與圖卡被拉開而產生大量空白 -->
-                    <div class="lg:col-span-5 flex flex-col gap-3 lg:gap-4 justify-start">
-                        
-                        <!-- 吉祥物導引對話框 -->
-                        <div class="w-full flex items-center gap-4 bg-white/95 border border-amber-200 p-3 rounded-2xl text-left shadow-sm">
-                            <div id="mascotAvatar" class="text-4xl shrink-0 select-none">🐣</div>
-                            <div class="flex-grow flex flex-col gap-2">
-                                <p id="speechBubble" class="text-sm sm:text-base font-black text-gray-800 tracking-tight leading-relaxed">請依照順序拼出正確的注音唷！</p>
-                                <div class="flex items-center gap-2 flex-wrap shrink-0">
-                                    <button id="listenBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 text-xs font-black shadow-sm border border-purple-200">
-                                        <i class="fa-solid fa-volume-high"></i>
-                                        <span>聽聽看發音</span>
-                                    </button>
-                                    <span class="text-[10px] text-purple-600/70 font-bold whitespace-nowrap">（語音功能僅支援行動裝置）</span>
-                                </div>
-                            </div>
+                <!-- 1. 吉祥物導引對話框 -->
+                <div class="w-full flex items-center gap-4 bg-white/95 border border-amber-200 p-3 rounded-2xl text-left shadow-sm">
+                    <div id="mascotAvatar" class="text-4xl shrink-0 select-none">🐣</div>
+                    <div class="flex-grow flex flex-col gap-2">
+                        <p id="speechBubble" class="text-sm sm:text-base font-black text-gray-800 tracking-tight leading-relaxed">請依照順序拼出正確的注音唷！</p>
+                        <div class="flex items-center gap-2 flex-wrap shrink-0">
+                            <button id="listenBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 text-xs font-black shadow-sm border border-purple-200">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>聽聽看發音</span>
+                            </button>
+                            <span class="text-[10px] text-purple-600/70 font-bold whitespace-nowrap">（語音功能僅支援行動裝置）</span>
                         </div>
-
-                        <!-- 題目大圖卡 -->
-                        <div class="flex flex-row lg:flex-col items-center justify-center gap-4 bg-white border-2 border-purple-200 p-4 lg:p-6 rounded-3xl shrink-0 h-24 lg:h-auto lg:flex-grow shadow-md">
-                            <div id="targetEmoji" class="text-5xl lg:text-8xl drop-shadow-sm select-none transition-transform duration-300 hover:scale-110">🐱</div>
-                            <h2 id="targetWordText" class="text-xl lg:text-4xl font-black text-slate-900 tracking-widest lg:mt-2">貓咪</h2>
-                        </div>
-                        
                     </div>
-                    
-                    <!-- 右半部（col-span-7）：放置生字拼音格子與候選泡泡池 -->
-                    <div class="lg:col-span-7 flex flex-col gap-4 lg:gap-5 justify-between">
-                        
-                        <div id="spellingSlotsContainer" class="flex gap-3 sm:gap-4 lg:gap-5 justify-center items-stretch flex-wrap sm:flex-nowrap flex-grow min-h-[140px] lg:min-h-[220px]">
-                        </div>
+                </div>
 
-                        <div id="bubblePool" class="flex flex-wrap gap-3 justify-center bg-white border-2 border-purple-100 p-4 rounded-3xl min-h-[96px] lg:min-h-[120px] shadow-sm w-full">
-                        </div>
-                        
-                    </div>
-                    
+                <!-- 2. 題目大圖卡 (💡 已調整 w-full 實現與對話提醒框完全等寬對齊) -->
+                <div class="flex flex-col items-center justify-center gap-2 bg-white border-2 border-purple-200 p-4 rounded-3xl shadow-md w-full">
+                    <div id="targetEmoji" class="text-6xl md:text-7xl drop-shadow-sm select-none transition-transform duration-300 hover:scale-110">🐱</div>
+                    <h2 id="targetWordText" class="text-lg md:text-2xl font-black text-slate-900 tracking-widest">貓咪</h2>
+                </div>
+                
+                <!-- 3. 填空區 -->
+                <div id="spellingSlotsContainer" class="flex gap-3 sm:gap-4 justify-center items-stretch flex-wrap min-h-[100px] w-full mt-1">
+                </div>
+
+                <!-- 4. 候選注音泡泡池 -->
+                <div id="bubblePool" class="flex flex-wrap gap-2.5 justify-center bg-white border-2 border-purple-100 p-3 sm:p-4 rounded-3xl min-h-[96px] shadow-sm w-full">
                 </div>
 
             </div>
@@ -534,9 +517,6 @@
         document.getElementById('victoryPanel').classList.add('hidden');
         document.getElementById('footerAction').classList.add('hidden');
 
-        document.getElementById('resetBtn').classList.remove('hidden');
-        stopCarouselTimer();
-
         loadQuestion();
         updateProgressBar();
     }
@@ -557,8 +537,9 @@
         slotsContainer.innerHTML = '';
 
         q.parts.forEach((part, charIndex) => {
+            // 💡 填空區域高度兩個一樣高：為 charBox 田字格設定精確固定的 h-36 sm:h-44 尺寸
             const charBox = document.createElement('div');
-            charBox.className = 'char-grid-box flex-1 min-w-[120px] sm:min-w-[140px] rounded-3xl flex flex-col items-center justify-center px-2 py-4 sm:p-4 shadow-sm h-full overflow-visible';
+            charBox.className = 'char-grid-box flex-1 min-w-[125px] sm:min-w-[140px] rounded-3xl flex flex-col items-center justify-center p-4 shadow-sm h-36 sm:h-44';
 
             const spellCopy = [...part.spell];
             let toneSymbol = null;
@@ -792,6 +773,7 @@
         }
     }
 
+    // 手動點選指示燈切換輪播卡片
     function setCarouselSlide(slideNum) {
         stopCarouselTimer();
         currentSlide = slideNum;
