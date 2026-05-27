@@ -142,12 +142,13 @@
 </head>
 <body class="bg-transparent py-2 md:py-4 px-4 flex flex-col justify-start items-center min-h-screen relative">
 
-<!-- 💡 電腦版寬度優化：改為精緻緊湊的 max-w-2xl -->
+<!-- 電腦版寬度優化：改為精緻緊湊的 max-w-2xl -->
 <div class="max-w-2xl w-full mx-auto">
     
     <div class="course-gradient-game p-2.5 sm:p-5 md:p-6 text-center flex flex-col justify-between">
         
-        <div class="flex items-center gap-4 mb-2 lg:mb-2.5 z-10 relative">
+        <!-- 頂部狀態列 -->
+        <div id="topStatusBar" class="flex items-center justify-between gap-4 mb-2 lg:mb-2.5 z-10 relative">
             <button id="resetBtn" class="bg-black/10 hover:bg-black/20 text-slate-800 px-4 py-2 rounded-xl flex items-center gap-2 transition-all active:scale-95 shrink-0 text-sm font-black shadow-sm" title="換一題">
                 <i class="fa-solid fa-rotate-right"></i>
                 <span>換一題</span>
@@ -159,7 +160,9 @@
                 </div>
             </div>
 
-            <span id="progressText" class="text-base font-black text-purple-950 shrink-0 select-none">1/5</span>
+            <div class="flex flex-col items-end shrink-0 select-none">
+                <span id="progressText" class="text-base font-black text-purple-950 leading-tight">1/3</span>
+            </div>
         </div>
 
         <div id="gameScreen" class="min-h-[420px] lg:min-h-[450px] flex flex-col justify-between relative z-10 transition-all duration-300">
@@ -177,12 +180,11 @@
                                 <i class="fa-solid fa-volume-high"></i>
                                 <span>聽聽看發音</span>
                             </button>
-                            <span class="text-[10px] text-purple-600/70 font-bold whitespace-nowrap">（語音功能僅支援行動裝置）</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. 題目大圖卡 (💡 已調整 w-full 實現與對話提醒框完全等寬對齊) -->
+                <!-- 2. 題目大圖卡 -->
                 <div class="flex flex-col items-center justify-center gap-2 bg-white border-2 border-purple-200 p-4 rounded-3xl shadow-md w-full">
                     <div id="targetEmoji" class="text-6xl md:text-7xl drop-shadow-sm select-none transition-transform duration-300 hover:scale-110">🐱</div>
                     <h2 id="targetWordText" class="text-lg md:text-2xl font-black text-slate-900 tracking-widest">貓咪</h2>
@@ -198,12 +200,14 @@
 
             </div>
 
-            <!-- 5題全部完成的勝利面板 -->
-            <div id="victoryPanel" class="hidden flex-col items-center justify-center py-4 text-center animate-fade-in w-full">
+            <!-- 3題全部完成的勝利面板 -->
+            <div id="victoryPanel" class="hidden flex-col items-center justify-center py-4 text-center animate-fade-in w-full overflow-hidden">
                 <div class="text-6xl mb-2">🏆</div>
-                <h2 class="text-2xl md:text-3xl font-black text-purple-950 tracking-tight mb-2">恭喜完成拼音大考驗！</h2>
+                <h2 class="text-2xl md:text-3xl font-black text-purple-950 tracking-tight mb-2">
+                    恭喜完成拼音大考驗！
+                </h2>
                 <p class="text-sm md:text-base font-black text-purple-900 mb-6 px-4 max-w-xl">
-                    想更進一步提升孩子的聽辨與拼讀能力嗎？推薦注音系列課程
+                    想要變成拼音小達人嗎？快來看看超好玩的注音課程！
                 </p>
 
                 <div class="my-3 w-full max-w-3xl text-left gap-4 flex flex-col">
@@ -343,7 +347,7 @@
 
                 </div>
 
-                <button id="restartGameBtn" class="btn-action-game w-full max-w-[240px] py-3 rounded-2xl font-black text-lg shadow-lg mt-3">
+                <button id="restartGameBtn" class="btn-action-game w-full max-w-[240px] py-3 rounded-2xl font-black text-lg shadow-lg mt-3 self-center">
                     再挑戰一次 🚀
                 </button>
             </div>
@@ -361,7 +365,42 @@
 
 </div>
 
+<!-- 可愛的高互動「答對彈出視窗（Modal）」 -->
+<div id="correctModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-4 z-50 transition-all duration-300 select-none">
+    <div class="bg-white rounded-[2.5rem] p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl border-4 border-emerald-300 transform scale-90 transition-transform duration-300 relative overflow-hidden">
+        
+        <!-- 背景亮色光芒裝飾 -->
+        <div class="absolute -top-12 -left-12 w-32 h-32 bg-emerald-100 rounded-full blur-2xl opacity-60"></div>
+        <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-yellow-100 rounded-full blur-2xl opacity-60"></div>
+
+        <!-- 獎牌/獎章大裝飾 -->
+        <div class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center text-5xl mx-auto mb-4 border-4 border-emerald-200 animate-bounce relative z-10">
+            🌟
+        </div>
+        
+        <!-- 動態隨機讚美詞：只放「你超級厲害！」、 「答對了！」、「你好棒！」等極簡純淨讚美 -->
+        <h3 id="correctModalTitle" class="text-2xl sm:text-3xl font-black text-emerald-600 mb-6 drop-shadow-sm tracking-wider">超級棒！</h3>
+        
+        <!-- 提示卡片：優化為完美置中對齊的字卡結構 -->
+        <div class="bg-amber-50 rounded-2xl p-4 border border-amber-100 mb-6 flex items-center justify-center gap-3">
+            <span id="correctWordEmoji" class="text-4xl">🍉</span>
+            <div class="text-left flex flex-col justify-center">
+                <span id="pronounceTipText" class="text-[10px] text-amber-800 font-extrabold block leading-none mb-2">拼讀大成功！</span>
+                <!-- 💡 此處將由 JS 動態渲染高相容性、完美置中的字卡 HTML -->
+                <div id="correctWordTextDisplay" class="flex items-center justify-start gap-3 select-none">
+                    <!-- 動態注音與國字將渲染於此 -->
+                </div>
+            </div>
+        </div>
+
+        <button id="modalNextBtn" class="btn-action-game w-full py-3.5 rounded-2xl font-black text-lg flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95">
+            <span>前進下一題 🚀</span>
+        </button>
+    </div>
+</div>
+
 <script>
+    // 題庫已精簡至 10 題
     const allQuestions = [
         { word: '貓咪', emoji: '🐱', parts: [{ char: '貓', spell: ['ㄇ', 'ㄠ'] }, { char: '咪', spell: ['ㄇ', 'ㄧ'] }] },
         { word: '西瓜', emoji: '🍉', parts: [{ char: '西', spell: ['ㄒ', 'ㄧ'] }, { char: '瓜', spell: ['ㄍ', 'ㄨ', 'ㄚ'] }] },
@@ -372,26 +411,7 @@
         { word: '飛機', emoji: '✈️', parts: [{ char: '飛', spell: ['ㄈ', 'ㄟ'] }, { char: '機', spell: ['ㄐ', 'ㄧ'] }] },
         { word: '小魚', emoji: '🐟', parts: [{ char: '小', spell: ['ㄒ', 'ㄧ', 'ㄠ', 'ˇ'] }, { char: '魚', spell: ['ㄩ', 'ˊ'] }] },
         { word: '汽車', emoji: '🚗', parts: [{ char: '汽', spell: ['ㄑ', 'ㄧ', 'ˋ'] }, { char: '車', spell: ['ㄔ', 'ㄜ'] }] },
-        { word: '蝴蝶', emoji: '🦋', parts: [{ char: '蝴', spell: ['ㄏ', 'ㄨ', 'ˊ'] }, { char: '蝶', spell: ['ㄉ', 'ㄧ', 'ㄝ', 'ˊ'] }] },
-        { word: '太陽', emoji: '☀️', parts: [{ char: '太', spell: ['ㄊ', 'ㄞ', 'ˋ'] }, { char: '陽', spell: ['ㄧ', 'ㄤ', 'ˊ'] }] },
-        { word: '恐龍', emoji: '🦕', parts: [{ char: '恐', spell: ['ㄎ', 'ㄨ', 'ㄥ', 'ˇ'] }, { char: '龍', spell: ['ㄌ', 'ㄨ', 'ㄥ', 'ˊ'] }] },
-        { word: '汽水', emoji: '🥤', parts: [{ char: '汽', spell: ['ㄑ', 'ㄧ', 'ˋ'] }, { char: '水', spell: ['ㄕ', 'ㄨ', 'ㄟ', 'ˇ'] }] },
-        { word: '麵包', emoji: '🍞', parts: [{ char: '麵', spell: ['ㄇ', 'ㄧ', 'ㄢ', 'ˋ'] }, { char: '包', spell: ['ㄅ', 'ㄠ'] }] },
-        { word: '氣球', emoji: '🎈', parts: [{ char: '氣', spell: ['ㄑ', 'ㄧ', 'ˋ'] }, { char: '球', spell: ['ㄑ', 'ㄧ', 'ㄡ', 'ˊ'] }] },
-        { word: '香蕉', emoji: '🍌', parts: [{ char: '香', spell: ['ㄒ', 'ㄧ', 'ㄤ'] }, { char: '蕉', spell: ['ㄐ', 'ㄧ', 'ㄠ'] }] },
-        { word: '葡萄', emoji: '🍇', parts: [{ char: '葡萄', spell: ['ㄆ', 'ㄨ', 'ˊ'] }, { char: '桃', spell: ['ㄊ', 'ㄠ', 'ˊ'] }] },
-        { word: '花朵', emoji: '🌸', parts: [{ char: '花', spell: ['ㄏ', 'ㄨ', 'ㄚ'] }, { char: '朵', spell: ['ㄉ', 'ㄨ', 'ㄛ', 'ˇ'] }] },
-        { word: '月亮', emoji: '🌙', parts: [{ char: '月', spell: ['ㄩ', 'ㄝ', 'ˋ'] }, { char: '亮', spell: ['ㄌ', 'ㄧ', 'ㄤ', 'ˋ'] }] },
-        { word: '獅子', emoji: '🦁', parts: [{ char: '獅', spell: ['ㄕ'] }, { char: '子', spell: ['ㄗ', '˙'] }] },
-        { word: '小狗', emoji: '🐶', parts: [{ char: '小', spell: ['ㄒ', 'ㄧ', 'ㄠ', 'ˇ'] }, { char: '狗', spell: ['ㄍ', 'ㄡ', 'ˇ'] }] },
-        { word: '小貓', emoji: '🐱', parts: [{ char: '小', spell: ['ㄒ', 'ㄧ', 'ㄠ', 'ˇ'] }, { char: '貓', spell: ['ㄇ', 'ㄠ'] }] },
-        { word: '青蛙', emoji: '🐸', parts: [{ char: '青', spell: ['ㄑ', 'ㄧ', 'ㄥ'] }, { char: '蛙', spell: ['ㄨ', 'ㄚ'] }] },
-        { word: '牛奶', emoji: '🥛', parts: [{ char: '牛', spell: ['ㄋ', 'ㄧ', 'ㄡ', 'ˊ'] }, { char: '奶', spell: ['ㄋ', 'ㄞ', 'ˇ'] }] },
-        { word: '漢堡', emoji: '🍔', parts: [{ char: '漢', spell: ['ㄏ', 'ㄢ', 'ˋ'] }, { char: '堡', spell: ['ㄅ', 'ㄠ', 'ˇ'] }] },
-        { word: '蛋糕', emoji: '🍰', parts: [{ char: '蛋', spell: ['ㄉ', 'ㄢ', 'ˋ'] }, { char: '糕', spell: ['ㄍ', 'ㄠ'] }] },
-        { word: '書包', emoji: '🎒', parts: [{ char: '書', spell: ['ㄕ', 'ㄨ'] }, { char: '包', spell: ['ㄅ', 'ㄠ'] }] },
-        { word: '鉛筆', emoji: '✏️', parts: [{ char: '鉛', spell: ['ㄑ', 'ㄧ', 'ㄢ'] }, { char: '筆', spell: ['ㄅ', 'ㄧ', 'ˇ'] }] },
-        { word: '火車', emoji: '🚂', parts: [{ char: '火', spell: ['ㄏ', 'ㄨ', 'ㄛ', 'ˇ'] }, { char: '車', spell: ['ㄔ', 'ㄜ'] }] }
+        { word: '蝴蝶', emoji: '🦋', parts: [{ char: '蝴', spell: ['ㄏ', 'ㄨ', 'ˊ'] }, { char: '蝶', spell: ['ㄉ', 'ㄧ', 'ㄝ', 'ˊ'] }] }
     ];
 
     const toneSymbols = ['ˊ', 'ˇ', 'ˋ', '˙'];
@@ -399,77 +419,83 @@
 
     let selectedQuestions = [];
     let currentQuestionIndex = 0;
-    let spellingSequence = [];
+    let spellingSequence = []; // 存放目前題目所有注音空格之 DOM 元件與正確字符
     let currentSequenceIndex = 0;
     let voiceEnabled = true;
 
     let carouselTimer = null;
     let currentSlide = 1;
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // 自製網頁音效 (Web Audio API)
+    let audioCtx = null;
     function playBeep(type) {
         if (!voiceEnabled) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
 
-        if (type === 'pop') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(380, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 0.12);
-            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.12);
-        } else if (type === 'success') {
-            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
-            osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.16);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.4);
-        } else if (type === 'wrong') {
-            osc.type = 'triangle';
-            
-            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
-            
-            setTimeout(() => {
-                const osc2 = audioCtx.createOscillator();
-                const gain2 = audioCtx.createGain();
-                osc2.type = 'triangle';
-                osc2.frequency.setValueAtTime(240, audioCtx.currentTime);
-                osc2.connect(gain2);
-                gain2.connect(audioCtx.destination);
+            if (type === 'pop') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(380, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 0.12);
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.12);
+            } else if (type === 'success') {
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.16);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'wrong') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
                 
-                gain2.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                
-                osc2.start();
-                osc2.stop(audioCtx.currentTime + 0.15);
-            }, 100);
+                setTimeout(() => {
+                    const osc2 = audioCtx.createOscillator();
+                    const gain2 = audioCtx.createGain();
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(240, audioCtx.currentTime);
+                    osc2.connect(gain2);
+                    gain2.connect(audioCtx.destination);
+                    gain2.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 0.15);
+                }, 100);
 
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.12);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.12);
+            }
+        } catch (e) {
+            console.warn("音效播放失敗:", e);
         }
     }
 
-    function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
+    // 高相容性的語音朗讀（全面支援手機與電腦端）
     function speak(text) {
         if (!voiceEnabled) return;
-        if (!isMobileDevice()) {
-            console.log("電腦版已停用語音功能");
-            return;
-        }
 
         const synth = window.speechSynthesis;
         if (!synth) return;
+        
+        // 解決 Chrome 長時間未使用時，TTS 自動掛起/暫探的 bug
+        if (synth.paused) {
+            synth.resume();
+        }
         
         synth.cancel();
         
@@ -479,7 +505,8 @@
             utterance.rate = 0.85;
             
             const voices = synth.getVoices();
-            const localVoice = voices.find(v => v.lang.includes('ZH-TW') || v.lang.includes('zh-TW') || v.lang.includes('zh_TW'));
+            // 優先尋找繁體中文（zh-TW / zh_TW / 台灣）語音庫
+            const localVoice = voices.find(v => v.lang.includes('ZH-TW') || v.lang.includes('zh-TW') || v.lang.includes('zh_TW') || v.name.includes('Yating') || v.name.includes('Taiwan') || v.name.includes('Google 國語'));
             if (localVoice) {
                 utterance.voice = localVoice;
             }
@@ -498,8 +525,11 @@
         }, 50);
     }
 
+    // 點擊網頁自動啟用 Web Audio 播放授權
     window.addEventListener('click', () => {
-        if (!isMobileDevice()) return;
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
         const synth = window.speechSynthesis;
         if (synth && synth.speaking === false) {
             const u = new SpeechSynthesisUtterance('');
@@ -508,26 +538,35 @@
         }
     }, { once: true });
 
+    // 初始化/隨機抽選題目關卡並切換畫面
     function startNewGame() {
         const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-        selectedQuestions = shuffled.slice(0, 5);
+        selectedQuestions = shuffled.slice(0, 3);
         currentQuestionIndex = 0;
 
+        // 直接顯示狀態列與遊戲區
+        document.getElementById('topStatusBar').classList.remove('hidden');
         document.getElementById('playPanel').style.display = 'flex';
+        document.getElementById('playPanel').classList.remove('hidden');
         document.getElementById('victoryPanel').classList.add('hidden');
         document.getElementById('footerAction').classList.add('hidden');
+        document.getElementById('resetBtn').classList.remove('hidden');
+
+        // 關閉 Modal
+        closeCorrectModal();
 
         loadQuestion();
-        updateProgressBar();
     }
 
+    // 載入題目關卡
     function loadQuestion() {
         const q = selectedQuestions[currentQuestionIndex];
 
         document.getElementById('targetEmoji').innerText = q.emoji;
         document.getElementById('targetWordText').innerText = q.word;
         document.getElementById('footerAction').classList.add('hidden');
-
+        
+        // 題目載入時小雞對話框
         document.getElementById('speechBubble').innerText = `「${q.word}」要怎麼拼呢？`;
 
         spellingSequence = [];
@@ -537,9 +576,9 @@
         slotsContainer.innerHTML = '';
 
         q.parts.forEach((part, charIndex) => {
-            // 💡 填空區域高度兩個一樣高：為 charBox 田字格設定精確固定的 h-36 sm:h-44 尺寸
+            // 填注音符號欄無文字田字格
             const charBox = document.createElement('div');
-            charBox.className = 'char-grid-box flex-1 min-w-[125px] sm:min-w-[140px] rounded-3xl flex flex-col items-center justify-center p-4 shadow-sm h-36 sm:h-44';
+            charBox.className = 'char-grid-box flex-1 min-w-[125px] sm:min-w-[140px] rounded-3xl flex flex-col items-center justify-center p-4 shadow-sm h-28 sm:h-36';
 
             const spellCopy = [...part.spell];
             let toneSymbol = null;
@@ -606,8 +645,10 @@
         currentSequenceIndex = 0;
         markActiveSlot();
         buildBubblePool(q);
+        speak(q.word);
     }
 
+    // 動態建置彩色候選注音泡泡池
     function buildBubblePool(q) {
         let correctSymbols = [];
         q.parts.forEach(p => {
@@ -652,6 +693,7 @@
         });
     }
 
+    // 醒目提示目前拼音的目標槽位
     function markActiveSlot() {
         document.querySelectorAll('.bopo-slot').forEach(slot => {
             slot.classList.remove('active-slot');
@@ -666,12 +708,14 @@
         }
     }
 
+    // 處理泡泡觸碰/點擊
     function handleBubbleTap(symbol, btnElement) {
         if (currentSequenceIndex >= spellingSequence.length) return;
 
         const target = spellingSequence[currentSequenceIndex];
 
         if (symbol === target.symbol) {
+            // 答對邏輯
             playBeep('pop');
             createConfetti(btnElement);
 
@@ -695,6 +739,7 @@
                 markActiveSlot();
             }
         } else {
+            // 答錯提示：只撥放答錯提示音，並給予搖晃動畫，讓小朋友自由探索到正確答案
             playBeep('wrong');
             btnElement.classList.add('shake-anim');
             setTimeout(() => btnElement.classList.remove('shake-anim'), 400);
@@ -707,41 +752,122 @@
         }
     }
 
+    // 完成當前單字答題
     function handleQuestionComplete() {
         playBeep('success');
 
-        const praises = [
+        // 隨機讚美詞
+        const praisesHeader = ["你超級厲害！👏", "答對了！🎉", "你好棒！🌟", "超級棒！🏆"];
+        const randPraise = praisesHeader[Math.floor(Math.random() * praisesHeader.length)];
+
+        const q = selectedQuestions[currentQuestionIndex];
+
+        // 💡 修改排版：改用乾淨的 flex flex-col 盒子替代 native <ruby> 標籤，
+        // 確保國字（上）與注音（下）在任何裝置中都處於絕對置中的對齊線！
+        let cardHtml = '';
+        q.parts.forEach(part => {
+            const bopoStr = part.spell.join('');
+            cardHtml += `<div class="flex flex-col items-center justify-center mx-1.5 select-none leading-none">
+                            <span class="text-2xl sm:text-3xl font-black text-amber-950 mb-1.5">${part.char}</span>
+                            <span class="text-xs sm:text-sm font-black text-purple-600 tracking-wider">${bopoStr}</span>
+                         </div>`;
+        });
+
+        // 吉祥物讚美對白
+        const praisesSpeech = [
             "你拼對了！太厲害了！",
             "完全正確！拍拍手！",
             "你好棒！全部都找對了！",
             "答對了，你真厲害！"
         ];
-        document.getElementById('speechBubble').innerText = praises[Math.floor(Math.random() * praises.length)];
+        document.getElementById('speechBubble').innerText = praisesSpeech[Math.floor(Math.random() * praisesSpeech.length)];
 
-        document.getElementById('footerAction').classList.remove('hidden');
+        // 僅賦值讚美標題與 Emoji，保持視窗極度簡潔
+        document.getElementById('correctModalTitle').innerText = randPraise;
+        document.getElementById('correctWordEmoji').innerText = q.emoji;
+        
+        // 將精美設計、完全置中對齊的字形注音卡片渲染進彈窗中
+        document.getElementById('correctWordTextDisplay').innerHTML = cardHtml;
+
+        // 如果是最後一題，按鈕文字切換
+        const modalBtnSpan = document.querySelector('#modalNextBtn span');
+        if (currentQuestionIndex === selectedQuestions.length - 1) {
+            modalBtnSpan.innerText = "看成果囉！ 🏁";
+        } else {
+            modalBtnSpan.innerText = "前進下一題 🚀";
+        }
+
+        // 噴灑紙花
+        const slots = document.querySelectorAll('.bopo-slot');
+        slots.forEach(slot => createConfetti(slot));
+
+        // 顯示可愛彈窗
+        openCorrectModal();
     }
 
+    // 彈窗開啟與關閉
+    function openCorrectModal() {
+        const modal = document.getElementById('correctModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modal.firstElementChild.classList.remove('scale-90');
+            modal.firstElementChild.classList.add('scale-100');
+        }, 30);
+    }
+
+    function closeCorrectModal() {
+        const modal = document.getElementById('correctModal');
+        modal.firstElementChild.classList.remove('scale-100');
+        modal.firstElementChild.classList.add('scale-90');
+        setTimeout(() => {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }, 150);
+    }
+
+    // 前進下一題的核心邏輯
+    function proceedToNext() {
+        closeCorrectModal();
+        setTimeout(() => {
+            currentQuestionIndex++;
+            updateProgressBar();
+
+            if (currentQuestionIndex >= 3) {
+                showVictory();
+            } else {
+                loadQuestion();
+            }
+        }, 200);
+    }
+
+    // 點擊彈窗的「前進下一題」
+    document.getElementById('modalNextBtn').addEventListener('click', proceedToNext);
+
+    // 前往下一題事件 (底部的備用/原按鈕邏輯保留)
     document.getElementById('nextBtn').addEventListener('click', () => {
         currentQuestionIndex++;
         updateProgressBar();
 
-        if (currentQuestionIndex >= 5) {
+        if (currentQuestionIndex >= 3) {
             showVictory();
         } else {
             loadQuestion();
         }
     });
 
+    // 更新頂端進度條
     function updateProgressBar() {
-        const currentDisplayNum = Math.min(currentQuestionIndex + 1, 5);
-        const percentage = (currentQuestionIndex / 5) * 100;
+        const currentDisplayNum = Math.min(currentQuestionIndex + 1, 3);
+        const percentage = (currentQuestionIndex / 3) * 100;
         document.getElementById('progressBar').style.width = `${percentage}%`;
-        document.getElementById('progressText').innerText = `${currentDisplayNum}/5`;
+        document.getElementById('progressText').innerText = `${currentDisplayNum}/3`;
     }
 
+    // 展示成果結算
     function showVictory() {
         document.getElementById('progressBar').style.width = '100%';
-        document.getElementById('progressText').innerText = '5/5';
+        document.getElementById('progressText').innerText = '3/3';
         document.getElementById('playPanel').style.display = 'none';
         document.getElementById('footerAction').classList.add('hidden');
         document.getElementById('victoryPanel').classList.remove('hidden');
@@ -756,6 +882,7 @@
         }, 600);
     }
 
+    // 結算輪播計時器
     function startCarouselTimer() {
         stopCarouselTimer();
         updateCarouselUI();
@@ -796,44 +923,7 @@
         startCarouselTimer();
     }
 
-    function prevCarouselSlide() {
-        stopCarouselTimer();
-        currentSlide = (currentSlide === 1) ? 2 : 1;
-        updateCarouselUI();
-        startCarouselTimer();
-    }
-
-    function updateCarouselUI() {
-        const item1 = document.getElementById('carousel-item-1');
-        const item2 = document.getElementById('carousel-item-2');
-        const dot1 = document.getElementById('carousel-dot-1');
-        const dot2 = document.getElementById('carousel-dot-2');
-
-        if (!item1 || !item2) return;
-
-        if (currentSlide === 1) {
-            item1.classList.remove('inactive');
-            item1.classList.add('active');
-            item2.classList.remove('active');
-            item2.classList.add('inactive');
-
-            dot1.classList.add('bg-purple-800', 'w-6');
-            dot1.classList.remove('bg-purple-200');
-            dot2.classList.add('bg-purple-200');
-            dot2.classList.remove('bg-purple-800', 'w-6');
-        } else {
-            item1.classList.remove('active');
-            item1.classList.add('inactive');
-            item2.classList.remove('inactive');
-            item2.classList.add('active');
-
-            dot2.classList.add('bg-purple-800', 'w-6');
-            dot2.classList.remove('bg-purple-200');
-            dot1.classList.add('bg-purple-200');
-            dot1.classList.remove('bg-purple-800', 'w-6');
-        }
-    }
-
+    // 複製折扣優惠碼
     function copyCouponCodeInsideGame() {
         const codeText = "GPM300";
         
@@ -851,6 +941,7 @@
         }
     }
 
+    // 相容模式複製輔助
     function fallbackCopyText(text) {
         const tempInput = document.createElement("textarea");
         tempInput.value = text;
@@ -906,20 +997,55 @@
         }, 2000);
     }
 
-    document.getElementById('restartGameBtn').addEventListener('click', () => {
-        document.getElementById('playPanel').style.display = 'flex';
-        startNewGame();
-    });
+    function prevCarouselSlide() {
+        stopCarouselTimer();
+        currentSlide = (currentSlide === 1) ? 2 : 1;
+        updateCarouselUI();
+        startCarouselTimer();
+    }
 
-    document.getElementById('resetBtn').addEventListener('click', () => {
-        startNewGame();
-    });
+    // 更新行銷方案推薦輪播指示燈
+    function updateCarouselUI() {
+        const item1 = document.getElementById('carousel-item-1');
+        const item2 = document.getElementById('carousel-item-2');
+        const dot1 = document.getElementById('carousel-dot-1');
+        const dot2 = document.getElementById('carousel-dot-2');
+
+        if (!item1 || !item2) return;
+
+        if (currentSlide === 1) {
+            item1.classList.remove('inactive');
+            item1.classList.add('active');
+            item2.classList.remove('active');
+            item2.classList.add('inactive');
+
+            dot1.classList.add('bg-purple-800', 'w-6');
+            dot1.classList.remove('bg-purple-200');
+            dot2.classList.add('bg-purple-200');
+            dot2.classList.remove('bg-purple-800', 'w-6');
+        } else {
+            item1.classList.remove('active');
+            item1.classList.add('inactive');
+            item2.classList.remove('inactive');
+            item2.classList.add('active');
+
+            dot2.classList.add('bg-purple-800', 'w-6');
+            dot2.classList.remove('bg-purple-200');
+            dot1.classList.add('bg-purple-200');
+            dot1.classList.remove('bg-purple-800', 'w-6');
+        }
+    }
+
+    // 重新挑戰與換一題
+    document.getElementById('restartGameBtn').addEventListener('click', startNewGame);
+    document.getElementById('resetBtn').addEventListener('click', startNewGame);
 
     document.getElementById('listenBtn').addEventListener('click', () => {
         const q = selectedQuestions[currentQuestionIndex];
         speak(q.word);
     });
 
+    // 噴灑繽紛紙花
     function createConfetti(btn) {
         const screen = document.getElementById('gameScreen');
         const colors = ['#f43f5e', '#fbbf24', '#10b981', '#0ea5e9', '#a855f7'];
@@ -947,6 +1073,14 @@
             screen.appendChild(p);
             setTimeout(() => p.remove(), 800);
         }
+    }
+
+    // 異步預加載語音庫，並在頁面載入後自動開始遊戲
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
     }
 
     window.onload = function() {
