@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>拼音小遊戲</title>
+
+<!--  Google Tag Manager -->
+<script>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N8VL4XS');
+</script>
+<!-- End Google Tag Manager -->
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
@@ -141,6 +152,13 @@
     </style>
 </head>
 <body class="bg-transparent py-2 md:py-4 px-4 flex flex-col justify-start items-center min-h-screen relative">
+
+<!-- ✅ Google Tag Manager (noscript) -->
+<noscript>
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8VL4XS"
+height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End GTM (noscript) -->
 
 <!-- 電腦版寬度優化：改為精緻緊湊的 max-w-2xl -->
 <div class="max-w-2xl w-full mx-auto">
@@ -880,6 +898,12 @@
         setTimeout(() => {
             playBeep('success');
         }, 600);
+// ✅ GTM 自訂事件：完成遊戲
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({
+event: 'aitool_success',
+subject_type: 'bopomofogame'
+});
     }
 
     // 結算輪播計時器
@@ -1090,3 +1114,5 @@
 
 </body>
 </html>
+
+
