@@ -727,10 +727,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     }
 
     // 處理泡泡觸碰/點擊
-    function handleBubbleTap(symbol, btnElement) {
-        if (currentSequenceIndex >= spellingSequence.length) return;
+function handleBubbleTap(symbol, btnElement) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'aitool_success',
+        tooltitle: 'bopomofogame'
+    });
 
-        const target = spellingSequence[currentSequenceIndex];
+    if (currentSequenceIndex >= spellingSequence.length) return;
+
+    const target = spellingSequence[currentSequenceIndex];
 
         if (symbol === target.symbol) {
             // 答對邏輯
@@ -898,13 +904,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         setTimeout(() => {
             playBeep('success');
         }, 600);
-// ✅ GTM 自訂事件：完成遊戲
-window.dataLayer = window.dataLayer || [];
-window.dataLayer.push({
-event: 'aitool_success',
-tooltitle: 'bopomofogame'
-});
-    }
 
     // 結算輪播計時器
     function startCarouselTimer() {
